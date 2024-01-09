@@ -2,13 +2,13 @@ import streamlit as st
 import pyodbc
 cnxn = pyodbc.connect(
                 "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
-                + st.secrets["server"]
+                + "instructiondata.database.windows.net"
                 + ";DATABASE="
-                + st.secrets["database"]
+                + "db_instruction"
                 + ";UID="
-                + st.secrets["username"]
+                + "adminbeer"
                 + ";PWD="
-                + st.secrets["password"]
+                + "Beer1234"
             )
 
 cursor = cnxn.cursor()
