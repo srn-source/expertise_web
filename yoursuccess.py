@@ -3,17 +3,26 @@ import home
 import pyodbc
 import matplotlib.pyplot as plt
 
+#cnxn = pyodbc.connect(
+#                "DRIVER={ODBC Driver 17 for SQL Server};encrypt=no;SERVER="
+#                + st.secrets["server"]
+#                + ";DATABASE="
+#                + st.secrets["database"]
+#                + ";UID="
+#                + st.secrets["username"]
+#                + ";PWD="
+#                + st.secrets["password"]
+#            )
 cnxn = pyodbc.connect(
-                "DRIVER={ODBC Driver 17 for SQL Server};encrypt=no;SERVER="
-                + st.secrets["server"]
+                "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
+                + "instructiondata.database.windows.net"
                 + ";DATABASE="
-                + st.secrets["database"]
+                + "db_instruction"
                 + ";UID="
-                + st.secrets["username"]
+                + "adminbeer"
                 + ";PWD="
-                + st.secrets["password"]
+                + "Beer1234"
             )
-
 cursor = cnxn.cursor()
 def app():
     
