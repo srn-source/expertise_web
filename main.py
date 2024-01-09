@@ -168,12 +168,46 @@ def app():
                     #print("2")
 
                     # import pandas as pd
-                    # df = pd.read_csv(r'C:\Users\BeEr\Downloads\Finance_topic.csv')
-                    # df = df.fillna('')
-                    # print(df.head(2))
-                    # try:
+                    # df1 = pd.read_csv(r'C:\Users\BeEr\Downloads\Medical_topic.csv')
+                    # df1 = df1.fillna('')
+                    # print(df1.head(2))
 
+                    # df2 = pd.read_csv(r'C:\Users\BeEr\Downloads\Legal_topic.csv')
+                    # df2 = df2.fillna('')
+                    # print(df2.head(2))
+
+                    # df3 = pd.read_csv(r'C:\Users\BeEr\Downloads\Finance_topic.csv')
+                    # df3 = df3.fillna('')
+                    # print(df3.head(2))
+                    # try:
                     #     for index, row in df.iterrows():
+                    #         task_type_id = 0
+                    #         if row["task_type"] == "Closed QA":
+                    #             task_type_id = 2
+                    #         elif row["task_type"] == "Open QA":
+                    #             task_type_id = 1
+                    #         elif row["task_type"] == "Summarization":
+                    #             task_type_id = 4
+                    #         elif row["task_type"] == "Classification":
+                    #             task_type_id = 6
+                    #         elif row["task_type"] == "Multiple choice":
+                    #             task_type_id = 3
+
+                    #         row1 = (row["type"],row["keys"],0,row["task_type"], task_type_id  ,row["Instruction"],row["Input"],row["Output"] )
+                    #         cursor.execute('INSERT INTO TD_info(type_domain, article_id, rev, task_type,  task_type_id, Instruction, Input, Output) VALUES (?,?,?,?,?,?,?,?)', row1)
+                    #     cnxn.commit()
+                    # except Exception as e:
+                    #     print("The error is: ",e)
+                    # try:
+                    #     for index, row in df1.iterrows():
+                    #         row1 = (row["keys"],row["Topic"],row["title"],row["texts"],row["url"],row["type1"])
+                    #         cursor.execute('INSERT INTO TM_articles(article_id, type_domain, title_name, contents, url, task_type) VALUES (?,?,?,?,?,?)', row1)
+                    #     #cnxn.commit()
+                    #     for index, row in df2.iterrows():
+                    #         row1 = (row["keys"],row["Topic"],row["title"],row["texts"],row["url"],row["type1"])
+                    #         cursor.execute('INSERT INTO TM_articles(article_id, type_domain, title_name, contents, url, task_type) VALUES (?,?,?,?,?,?)', row1)
+                    #     #cnxn.commit()
+                    #     for index, row in df3.iterrows():
                     #         row1 = (row["keys"],row["Topic"],row["title"],row["texts"],row["url"],row["type1"])
                     #         cursor.execute('INSERT INTO TM_articles(article_id, type_domain, title_name, contents, url, task_type) VALUES (?,?,?,?,?,?)', row1)
                     #     cnxn.commit()
