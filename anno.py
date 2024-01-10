@@ -102,6 +102,7 @@ import pyodbc
 #                + ";PWD="
 #                + st.secrets["password"]
 #            )
+
 cnxn = pyodbc.connect(
                 "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
                 + "instructiondata.database.windows.net"
@@ -113,6 +114,20 @@ cnxn = pyodbc.connect(
                 + "Beer1234"
             )
 cursor = cnxn.cursor()
+
+def reconnect():
+    cnxn = pyodbc.connect(
+                "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
+                + "instructiondata.database.windows.net"
+                + ";DATABASE="
+                + "db_instruction"
+                + ";UID="
+                + "adminbeer"
+                + ";PWD="
+                + "Beer1234"
+            )
+    cursor = cnxn.cursor()
+    return cursor
 
 def app():
     #print("====> ",st.session_state)
@@ -140,8 +155,13 @@ def app():
             # #print("user = ",st.session_state['userName'])
             # df_new = conn.query(sql=sql.format(type1 = "'"+ st.session_state['userName'] + "'"))
             # print(df_new)
-            
-
+            cursor = reconnect()
+            while True:
+                if not cnxn:
+                    cursor = reconnect()
+                    print("ok")
+                else:
+                    break
             df_new = cursor.execute("SELECT TOP 1 * from View_info_insert WHERE actor_master = {} and date_insert IS NULL;".format("'"+st.session_state['userName']+ "'"))
             df_new = df_new.fetchall()
             #print(df_new)
