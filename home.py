@@ -36,15 +36,15 @@ def reconnect():
                 + "Beer1234"
             )
     cursor = cnxn.cursor()
-    return cursor
+    return cursor, cnxn
 
 def signup(userName, password):
     user_add = False
     try:
-        cursor = reconnect()
+        cursor, cnxn = reconnect()
         while True:
             if not cnxn:
-                cursor = reconnect()
+                cursor, cnxn = reconnect()
                 print("ok")
             else:
                 break

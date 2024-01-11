@@ -127,7 +127,7 @@ def reconnect():
                 + "Beer1234"
             )
     cursor = cnxn.cursor()
-    return cursor
+    return cursor, cnxn
 
 def app():
     #print("====> ",st.session_state)
@@ -155,10 +155,10 @@ def app():
             # #print("user = ",st.session_state['userName'])
             # df_new = conn.query(sql=sql.format(type1 = "'"+ st.session_state['userName'] + "'"))
             # print(df_new)
-            cursor = reconnect()
+            cursor, cnxn = reconnect()
             while True:
                 if not cnxn:
-                    cursor = reconnect()
+                    cursor, cnxn = reconnect()
                     print("ok")
                 else:
                     break

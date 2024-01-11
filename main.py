@@ -37,7 +37,7 @@ def reconnect():
                 + "Beer1234"
             )
     cursor = cnxn.cursor()
-    return cursor
+    return cursor, cnxn
 
 def app():
 
@@ -118,10 +118,10 @@ def app():
             #     print("There are no results for this query")
             # else:
             #     print("ok")
-            cursor = reconnect()
+            cursor, cnxn = reconnect()
             while True:
                 if not cnxn:
-                    cursor = reconnect()
+                    cursor, cnxn = reconnect()
                     print("ok")
                 else:
                     break

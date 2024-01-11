@@ -37,7 +37,7 @@ def reconnect():
                 + "Beer1234"
             )
     cursor = cnxn.cursor()
-    return cursor
+    return cursor, cnxn
 
 def app():
     
@@ -46,10 +46,10 @@ def app():
         st.subheader("Your progress", divider='rainbow')
         labels = 'Done', 'In progress'
 
-        cursor = reconnect()
+        cursor, cnxn = reconnect()
         while True:
             if not cnxn:
-                cursor = reconnect()
+                cursor, cnxn = reconnect()
             else:
                 break
         df_in_progress = cursor.execute("SELECT * from View_info_insert WHERE actor_master = {} and date_insert IS NULL;".format("'"+st.session_state['userName']+ "'"))
