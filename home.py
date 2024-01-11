@@ -24,10 +24,30 @@ cnxn = pyodbc.connect(
 
 
 cursor = cnxn.cursor()
+def reconnect():
+    cnxn = pyodbc.connect(
+                "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
+                + "instructiondata.database.windows.net"
+                + ";DATABASE="
+                + "db_instruction"
+                + ";UID="
+                + "adminbeer"
+                + ";PWD="
+                + "Beer1234"
+            )
+    cursor = cnxn.cursor()
+    return cursor
 
 def signup(userName, password):
     user_add = False
     try:
+        cursor = reconnect()
+        while True:
+            if not cnxn:
+                cursor = reconnect()
+                print("ok")
+            else:
+                break
         j = cursor.execute("SELECT * from TD_user WHERE username = {} and password = {};".format("'"+userName+"'", "'"+password+"'")) 
         count = 0
         

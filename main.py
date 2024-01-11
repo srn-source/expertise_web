@@ -24,6 +24,21 @@ cnxn = pyodbc.connect(
                 + "Beer1234"
             )
 cursor = cnxn.cursor()
+
+def reconnect():
+    cnxn = pyodbc.connect(
+                "DRIVER={ODBC Driver 17 for SQL Server};SERVER="
+                + "instructiondata.database.windows.net"
+                + ";DATABASE="
+                + "db_instruction"
+                + ";UID="
+                + "adminbeer"
+                + ";PWD="
+                + "Beer1234"
+            )
+    cursor = cnxn.cursor()
+    return cursor
+
 def app():
 
     headerSection = st.container()
@@ -103,8 +118,15 @@ def app():
             #     print("There are no results for this query")
             # else:
             #     print("ok")
+            cursor = reconnect()
+            while True:
+                if not cnxn:
+                    cursor = reconnect()
+                    print("ok")
+                else:
+                    break
             count = 0
-            
+
             j = cursor.execute("SELECT * from TD_user WHERE username = {} and password = {};".format(userName,password))
             for row in j:
                 count = 1
