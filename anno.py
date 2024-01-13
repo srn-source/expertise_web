@@ -194,12 +194,17 @@ def app():
                 domain_tag = st.multiselect("Domain Tags*", options=DEF_TAG ) #,  default= ["5.กลยุทธ์การลงทุน","6.การบริหารสินทรัพย์"]
                 thai_spec = st.selectbox("Thai Culture Specific*", options=THAICULT )
                 review_status = st.selectbox("Review Status*", options=REVIEWSTATUS)
+
+                multi = '''Criteria\n1. Output is reasonable\n2. Correct information?*\n3. Makesene question\n4. Knowledge or Culture specific questions (Optional)
+                '''
+                st.markdown(multi)
+            
                 comment_name = st.text_area(label="Comment*", height= 200, value="")
 
                 # Mark mandatory fields
                 st.markdown("**required*")
 
-                submit_button = st.form_submit_button(label="Submit Vendor Details")
+                submit_button = st.form_submit_button(label="Submit Details")
                 
 
                 #If the submit button is pressed
