@@ -39,6 +39,12 @@ def reconnect():
     cursor = cnxn.cursor()
     return cursor, cnxn
 
+def make_autopct(values):
+    def my_autopct(pct):
+        total = sum(values)
+        val = int(round(pct*total/100.0))
+        return '{p:.2f}%  ({v:d})'.format(p=pct,v=val)
+    return my_autopct
 
 def app():
     
@@ -61,8 +67,8 @@ def app():
         #print(sizes)
         explode = (0, 0.1)  # only "explode" the 2nd slice (i.e. 'Hogs')
         fig1, ax1 = plt.subplots()
-        ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',shadow=True, startangle=90)
         #ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%',shadow=True, startangle=90)
+        ax1.pie(sizes, explode=explode, labels=labels, autopct=make_autopct(sizes) ,shadow=True, startangle=90)
         ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
         st.pyplot(fig1)
         

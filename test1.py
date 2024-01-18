@@ -91,8 +91,8 @@ class MultiApp:
         
 
         
-        if app == "Home":
-            home.app()
+        # if app == "Home":
+        #     home.app()
         if app == "Main":
             main.app()    
         if app == "Annotation":

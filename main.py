@@ -172,7 +172,53 @@ def app():
                 userName = st.text_input (label="", value="", placeholder="Enter your user name")
                 password = st.text_input (label="", value="",placeholder="Enter password", type="password")
                 st.button ("Login", on_click=LoggedIn_Clicked, args= (userName, password))
-                
+    
+    def save_info(df , n , dom):
+        try:
+            for index, row in df.iterrows():
+                task_type_id = 0
+                if row["task_type"] == "Closed QA":
+                    task_type_id = 2
+                elif row["task_type"] == "Open QA":
+                    task_type_id = 1
+                elif row["task_type"] == "Summarization":
+                    task_type_id = 4
+                elif row["task_type"] == "Classification":
+                    task_type_id = 6
+                elif row["task_type"] == "Multiple choice":
+                    task_type_id = 3
+
+                actor = 'no'
+                if dom != "Medical":
+                    if index % n == 0:
+                        actor = dom + str(1)
+                    elif index % n == 1:
+                        actor = dom + str(2)
+                    elif index % n == 2:
+                        actor = dom + str(3)
+                    elif index % n == 3:
+                        actor = dom + str(4)
+                    elif index % n == 4:
+                        actor = dom + str(5)
+                else:
+                    if index % n == 0:
+                        actor = dom + str(1)
+                    elif index % n == 1:
+                        actor = dom + str(2)
+                    elif index % n == 2:
+                        actor = dom + str(3)
+                    elif index % n == 3:
+                        actor = dom + str(4)
+                    elif index % n == 4:
+                        actor = dom + str(5)
+                    elif index % n == 5:
+                        actor = dom + str(6)
+
+                row1 = (row["type"],row["keys"],0,row["task_type"], task_type_id  ,row["Instruction"].strip(),row["Input"].strip(),row["Output"].strip() , actor)
+                cursor.execute('INSERT INTO TD_info(type_domain, article_id, rev, task_type,  task_type_id, Instruction, Input, Output, Actor) VALUES (?,?,?,?,?,?,?,?,?)', row1)
+            cnxn.commit()
+        except Exception as e:
+            print("The error is: ",e)
 
     with headerSection:
             st.title("Login")
@@ -190,36 +236,29 @@ def app():
                     #print("2")
 
                     # import pandas as pd
-                    # df1 = pd.read_csv(r'C:\Users\BeEr\Downloads\Medical_topic.csv')
+                    # df1 = pd.read_excel(r'C:\Users\BeEr\Downloads\Retail_bacth1_pd.xlsx')
                     # df1 = df1.fillna('')
-                    # print(df1.head(2))
+                    # df1 = df1.tail(1)
+                    # df1['len_th_input'] = df1["Input"].str.len()
+                    # df1['len_th_output'] = df1["Output"].str.len()
+                    # print(df1)
+                    # save_info(df1, 5, 'Retail')
 
-                    # df2 = pd.read_csv(r'C:\Users\BeEr\Downloads\Legal_topic.csv')
+                    # df2 = pd.read_excel(r'C:\Users\BeEr\Downloads\Medical_bacth1_pd.xlsx')
                     # df2 = df2.fillna('')
                     # print(df2.head(2))
+                    # save_info(df2, 6, 'Medical')
 
-                    # df3 = pd.read_csv(r'C:\Users\BeEr\Downloads\Finance_topic.csv')
+                    # df3 = pd.read_excel(r'C:\Users\BeEr\Downloads\Legal_bacth1_pd.xlsx')
                     # df3 = df3.fillna('')
                     # print(df3.head(2))
-                    # try:
-                    #     for index, row in df.iterrows():
-                    #         task_type_id = 0
-                    #         if row["task_type"] == "Closed QA":
-                    #             task_type_id = 2
-                    #         elif row["task_type"] == "Open QA":
-                    #             task_type_id = 1
-                    #         elif row["task_type"] == "Summarization":
-                    #             task_type_id = 4
-                    #         elif row["task_type"] == "Classification":
-                    #             task_type_id = 6
-                    #         elif row["task_type"] == "Multiple choice":
-                    #             task_type_id = 3
+                    # save_info(df3, 5, 'Legal')
 
-                    #         row1 = (row["type"],row["keys"],0,row["task_type"], task_type_id  ,row["Instruction"],row["Input"],row["Output"] )
-                    #         cursor.execute('INSERT INTO TD_info(type_domain, article_id, rev, task_type,  task_type_id, Instruction, Input, Output) VALUES (?,?,?,?,?,?,?,?)', row1)
-                    #     cnxn.commit()
-                    # except Exception as e:
-                    #     print("The error is: ",e)
+                    # df4 = pd.read_excel(r'C:\Users\BeEr\Downloads\Finance_bacth1_pd.xlsx')
+                    # df4 = df4.fillna('')
+                    # print(df4.head(2))
+                    # save_info(df4, 5, 'Finance')
+
                     # try:
                     #     for index, row in df1.iterrows():
                     #         row1 = (row["keys"],row["Topic"],row["title"],row["texts"],row["url"],row["type1"])
