@@ -177,15 +177,15 @@ def app():
         try:
             for index, row in df.iterrows():
                 task_type_id = 0
-                if row["task_type"] == "Closed QA":
+                if row["Instruction task type"] == "Closed QA":
                     task_type_id = 2
-                elif row["task_type"] == "Open QA":
+                elif row["Instruction task type"] == "Open QA":
                     task_type_id = 1
-                elif row["task_type"] == "Summarization":
+                elif row["Instruction task type"] == "Summarization":
                     task_type_id = 4
-                elif row["task_type"] == "Classification":
+                elif row["Instruction task type"] == "Classification":
                     task_type_id = 6
-                elif row["task_type"] == "Multiple choice":
+                elif row["Instruction task type"] == "Multiple choice":
                     task_type_id = 3
 
                 actor = 'no'
@@ -214,7 +214,7 @@ def app():
                     elif index % n == 5:
                         actor = dom + str(6)
 
-                row1 = (row["type"],row["keys"],0,row["task_type"], task_type_id  ,row["Instruction"].strip(),row["Input"].strip(),row["Output"].strip() , actor)
+                row1 = (row["type"],row["keys"],0,row["Instruction task type"], task_type_id  ,row["Instruction"].strip(),row["Input"].strip(),row["Output"].strip() , actor)
                 cursor.execute('INSERT INTO TD_info(type_domain, article_id, rev, task_type,  task_type_id, Instruction, Input, Output, Actor) VALUES (?,?,?,?,?,?,?,?,?)', row1)
             cnxn.commit()
         except Exception as e:
@@ -235,26 +235,23 @@ def app():
                     #show_main_page()  
                     #print("2")
 
-                    # import pandas as pd
-                    # df1 = pd.read_excel(r'C:\Users\BeEr\Downloads\Retail_bacth1_pd.xlsx')
+                    import pandas as pd
+                    # df1 = pd.read_csv(r'C:\Users\BeEr\Downloads\Retail_batch2.csv')
                     # df1 = df1.fillna('')
-                    # df1 = df1.tail(1)
-                    # df1['len_th_input'] = df1["Input"].str.len()
-                    # df1['len_th_output'] = df1["Output"].str.len()
-                    # print(df1)
+                    # print(df1.head(3))
                     # save_info(df1, 5, 'Retail')
 
-                    # df2 = pd.read_excel(r'C:\Users\BeEr\Downloads\Medical_bacth1_pd.xlsx')
+                    # df2 = pd.read_csv(r'C:\Users\BeEr\Downloads\Medical_batch2.csv')
                     # df2 = df2.fillna('')
-                    # print(df2.head(2))
+                    # print(df2.head(3))
                     # save_info(df2, 6, 'Medical')
 
-                    # df3 = pd.read_excel(r'C:\Users\BeEr\Downloads\Legal_bacth1_pd.xlsx')
+                    # df3 = pd.read_csv(r'C:\Users\BeEr\Downloads\Legal_batch2.csv')
                     # df3 = df3.fillna('')
                     # print(df3.head(2))
                     # save_info(df3, 5, 'Legal')
 
-                    # df4 = pd.read_excel(r'C:\Users\BeEr\Downloads\Finance_bacth1_pd.xlsx')
+                    # df4 = pd.read_csv(r'C:\Users\BeEr\Downloads\Finance_batch2.csv')
                     # df4 = df4.fillna('')
                     # print(df4.head(2))
                     # save_info(df4, 5, 'Finance')
