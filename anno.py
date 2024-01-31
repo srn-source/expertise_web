@@ -251,7 +251,7 @@ def app():
                 #print(DEF_TAG)
                 domain_tag = st.multiselect("Domain Tags*", options=DEF_TAG ) #,  default= ["5.กลยุทธ์การลงทุน","6.การบริหารสินทรัพย์"]
                 thai_spec = st.selectbox("Thai Culture Specific*", options=THAICULT )
-                review_status = st.selectbox("Review Status*", options=REVIEWSTATUS)
+                review_status = st.selectbox("Review Status* (หาก Criteria แม้ 1 ข้อไม่ผ่าน จะต้องใส่ NOT_PASS เพื่อตีกลับไปแก้ไข)", options=REVIEWSTATUS)
 
                 multi = '''Criteria\n1. Output is reasonable\n2. Correct information?*\n3. Makesene question\n4. Knowledge or Culture specific questions (Optional)
                 '''
