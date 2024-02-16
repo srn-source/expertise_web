@@ -91,10 +91,13 @@ class MultiApp:
         
 
         
-        if app == "Home":
-            home.app()
+        # if app == "Home":
+        #     home.app()
+        # import pytz
         if app == "Main":
-            main.app()    
+            #from datetime import datetime
+            main.app()
+            #print("uuuu=",datetime.now(pytz.timezone('Asia/Bangkok')))
         if app == "Annotation":
             anno.app()        
         if app == 'Your success':

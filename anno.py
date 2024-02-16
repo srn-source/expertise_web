@@ -2,6 +2,7 @@ import streamlit as st
 # from streamlit_option_menu import option_menu
 import home, anno 
 from datetime import datetime
+import pytz
 
 PRODUCTS = [
     "Electronics",
@@ -285,7 +286,7 @@ def app():
                         try:
                             domain_tag = ",".join(domain_tag)
                             #cursor.execute('INSERT INTO TD_insert(type_domain, article_id, task_type, Instruction, Input, Output) VALUES (?,?,?,?,?,?)', tuple(row))
-                            row = (df_new[0][0],df_new[0][1],df_new[0][2],df_new[0][3],df_new[0][13],Instruction_name,input_name,Answer,domain_tag,thai_spec,review_status,comment_name,st.session_state['userName'],datetime.now())
+                            row = (df_new[0][0],df_new[0][1],df_new[0][2],df_new[0][3],df_new[0][13],Instruction_name,input_name,Answer,domain_tag,thai_spec,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
                             cursor.execute("INSERT INTO TD_insert(type_domain, article_id, rev, task_type, task_type_id, Instruction, Input, Output, domain_tags, thai_specific, review_status, comment, Actor, Date_actor ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row)
                             cnxn.commit()
                             st.success("Details successfully submitted!")
