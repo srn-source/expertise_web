@@ -142,6 +142,10 @@ TAGS_MEDICAL = [
 "15.ภาควิชาระบาดวิทยา Epidemiology",
 "16.ทันตกรรม Dentistry",
 "17.เภสัชวิทยา Pharmacology",
+"18.งานการพยาบาล",
+"19.สาธารณสุข (public health)",
+"20.การแพทย์ทางเลือก (alternative medicine)"
+
 ]
 
 THAICULT = [
