@@ -145,7 +145,9 @@ TAGS_MEDICAL = [
 "18.งานการพยาบาล",
 "19.สาธารณสุข (public health)",
 "20.การแพทย์ทางเลือก (alternative medicine)",
-"21.เวชศาสตร์ฉุกเฉิน (emergency)"
+"21.เวชศาสตร์ฉุกเฉิน (emergency)",
+"22.Physiology",
+"23.Anatomy"
 
 ]
 
