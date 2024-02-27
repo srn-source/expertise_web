@@ -236,23 +236,23 @@ def app():
                     #show_main_page()  
                     #print("2")
 
-                    #import pandas as pd
-                    #df1 = pd.read_csv(r'C:\Users\BeEr\Downloads\Retail_b3.csv')
-                    #df1 = df1.fillna('')
-                    #print(df1.head(3))
-                    #save_info(df1, 5, 'Retail')
+                    # import pandas as pd
+                    # df1 = pd.read_csv(r'C:\Users\BeEr\Downloads\Retail_b4.csv')
+                    # df1 = df1.fillna('')
+                    # print(df1.head(3))
+                    # save_info(df1, 5, 'Retail')
 
-                    #df2 = pd.read_csv(r'C:\Users\BeEr\Downloads\Medical_b3.csv')
-                    #df2 = df2.fillna('')
-                    #print(df2.head(3))
-                    #save_info(df2, 6, 'Medical')
+                    # df2 = pd.read_csv(r'C:\Users\BeEr\Downloads\Medical_b4.csv')
+                    # df2 = df2.fillna('')
+                    # print(df2.head(3))
+                    # save_info(df2, 6, 'Medical')
 
-                    # df3 = pd.read_excel(r'C:\Users\BeEr\Downloads\Legal_b3_1.xlsx')
+                    # df3 = pd.read_csv(r'C:\Users\BeEr\Downloads\Legal_b4.csv')
                     # df3 = df3.fillna('')
                     # print(df3.head(2))
                     # save_info(df3, 5, 'Legal')
 
-                    # df4 = pd.read_excel(r'C:\Users\BeEr\Downloads\Finance_b3_1.xlsx')
+                    # df4 = pd.read_csv(r'C:\Users\BeEr\Downloads\Finance_b4.csv') #read_excel
                     # df4 = df4.fillna('')
                     # print(df4.head(2))
                     # save_info(df4, 5, 'Finance')
