@@ -252,7 +252,7 @@ def app():
                     print("ok")
                 else:
                     break
-            df_new = cursor.execute("SELECT TOP 1 * from View_info_insert WHERE actor_master = {} and date_insert IS NULL ORDER BY article_id;".format("'"+st.session_state['userName']+ "'"))
+            df_new = cursor.execute("SELECT TOP 1 * from View_info_insert WHERE actor_master = {} and date_insert IS NULL ;".format("'"+st.session_state['userName']+ "'"))
             df_new = df_new.fetchall()
             #print(df_new)
             if len(df_new)  == 1:
