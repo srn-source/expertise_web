@@ -73,4 +73,7 @@ def app():
         st.pyplot(fig1)
         
     else:
-        st.error("Please login")
+        if st.session_state['loggedIn'] == False or "USER" in st.session_state['userName'] :
+            st.subheader("You dont have permission")
+        else:
+            st.subheader("Please login again")

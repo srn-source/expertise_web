@@ -176,8 +176,7 @@ THAICULT = [
 
 REVIEWSTATUS =[
      "",
-     "PASS",
-     "NOT_PASS"
+     "SKIP"
 ]
 
 import pyodbc
@@ -252,85 +251,93 @@ def app():
                     print("ok")
                 else:
                     break
-            df_new = cursor.execute("SELECT TOP 1 * from View_info_insert WHERE actor_master = {} and date_insert IS NULL;".format("'"+st.session_state['userName']+ "'"))
+            df_new = cursor.execute("SELECT TOP 1 * from View_insert_chosen_reject WHERE actor = {} and date_actor IS NULL;".format("'"+st.session_state['userName']+ "'"))
             df_new = df_new.fetchall()
+
+            
             #print(df_new)
             if len(df_new)  == 1:
-                #ggg =""
-
-                st.subheader(df_new[0][11], divider='rainbow')
-                if "Medical" in df_new[0][0]:
-                        st.markdown(df_new[0][10])
-                #st.markdown(df_new[0][10])
-                #st.markdown("Link ref.: "+df_new[0][12])
-                if "Open" in df_new[0][3] or "Classification" in df_new[0][3] or "Creative" in df_new[0][3] or "choice" in df_new[0][3] or "Brainstorming" in df_new[0][3]:
-                    st.markdown("Link ref.: "+df_new[0][12])
-                st.subheader("Instruction Task Type: "+ df_new[0][3])
-                #print(df_new["id"].values[0])
-                #ids = df_new["id"].values[0]
-                # print(df_new["Instruction"].values[0])
                 
-                Instruction_name = st.text_area(label="Instruction (Question)*", height= 100, value=df_new[0][4])
-                input_name = st.text_area(label="Input", height= 200, value=df_new[0][5])
+                df_count = cursor.execute("SELECT COUNT(*) from View_insert_chosen_reject WHERE actor = {} and date_actor IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
+                df_count = df_count.fetchall()
+                st.subheader( "ID: " + df_new[0][0] + " (Done: " + str(df_count[0][0]) + ")", divider='rainbow')
+                if df_new[0][1] == '':
+                    if "Medical" in df_new[0][0]:
+                        st.markdown(df_new[0][5])
+                    if "Open" in df_new[0][7] or "Classification" in df_new[0][7] or "Creative" in df_new[0][7] or "choice" in df_new[0][7] or "Brainstorming" in df_new[0][7]:
+                        st.markdown("Link ref.: "+df_new[0][6])
+
+                    st.subheader("Type: "+ df_new[0][7])
+
+                    st.subheader("Instruction:")
+                    st.markdown(df_new[0][9])
+                    st.subheader("Context or Article:")
+                    st.markdown(df_new[0][10])
+                    st.subheader("Answer:")
+                    st.markdown(df_new[0][11])
+                else:
+                    st.subheader("Instruction:")
+                    st.markdown(df_new[0][2])
+                    st.subheader("Context or Article:")
+                    st.markdown(df_new[0][1])
+                    st.subheader("Answer:")
+                    st.markdown(df_new[0][3])
+                #st.subheader( "", divider='rainbow')
+                    # st.subheader("Instruction: "+df_new[0][2])
+                    # st.subheader("Context: "+df_new[0][1])
+                    # st.subheader("Answer: "+df_new[0][3])
+
+                
+                reject1 = st.text_area(label="Reject 1*", height= 200, value="")
+                reject2 = st.text_area(label="Reject 2*", height= 200, value="")
                 
                 #years_in_business = st.slider("Years in Business", 0, 50, 5)
                 #onboarding_date = st.date_input(label="Onboarding Date" )
-                Answer = st.text_area(label="Output*", height= 300, value=df_new[0][6])
-
-                DEF_TAG = PRODUCTS
-                if df_new[0][0] == "Finance":
-                   DEF_TAG = TAGS_FINANCE
-                elif df_new[0][0] == "Medical":
-                   DEF_TAG = TAGS_MEDICAL
-                elif df_new[0][0] == "Legal":
-                   DEF_TAG = TAGS_LEGAL
-                   
-                #print(DEF_TAG)
-                domain_tag = st.multiselect("Domain Tags*", options=DEF_TAG ) #,  default= ["5.กลยุทธ์การลงทุน","6.การบริหารสินทรัพย์"]
-                thai_spec = st.selectbox("Thai Culture Specific*", options=THAICULT )
-                review_status = st.selectbox("Review Status* (หาก Criteria แม้ 1 ข้อไม่ผ่าน จะต้องใส่ NOT_PASS เพื่อตีกลับไปแก้ไข)", options=REVIEWSTATUS)
-
-                multi = '''Criteria\n1. Output is reasonable\n2. Correct information?*\n3. Makesene question\n4. Knowledge or Culture specific questions (Optional)
+                review_status = st.selectbox("Review Status", options=REVIEWSTATUS)
+                multi = '''Importance\n1. บางข้อที่มีคำถาม refer ถึงบทความ แต่ไม่มี บทความอยู่ในช่อง Context or Article ให้สามารถ skip และใส่เหตุผล
                 '''
                 st.markdown(multi)
             
-                comment_name = st.text_area(label="Comment*", height= 200, value="")
+                comment_name = st.text_area(label="Comment", height= 200, value="")
 
                 # Mark mandatory fields
                 st.markdown("**required*")
-
                 submit_button = st.form_submit_button(label="Submit Details")
                 
 
                 #If the submit button is pressed
                 if submit_button:
                     # Check if all mandatory fields are filled
-                    if not Instruction_name  or not Answer or not comment_name or not review_status or not domain_tag or not thai_spec:
+                    if review_status != "" :
+                        print(review_status)
+                        if  comment_name == "":
+                            st.warning("please fill a reason why skip.")
+                            st.stop()
+                        else:
+                            try: 
+                                row = (df_new[0][0],reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                                cursor.execute("INSERT INTO TD_insert_chosen_reject(id_keys, reject_text1, reject_text2, status_review, comment, actor, date_actor ) VALUES (?,?,?,?,?,?,?)", row)
+                                cnxn.commit()
+                                st.success("You skip!!")
+                                st.rerun()
+                            except Exception as e:
+                                st.error(e)
+                    elif reject1 =="" or reject2 == "":
                         st.warning("Ensure all mandatory fields are filled.")
                         st.stop()
-                    # elif existing_data["CompanyName"].str.contains(company_name).any():
-                    #     st.warning("A vendor with this company name already exists.")
-                    #     st.stop()
                     else:
                         # Create a new row of vendor data
-                        try:
-                            domain_tag = ",".join(domain_tag)
-                            #cursor.execute('INSERT INTO TD_insert(type_domain, article_id, task_type, Instruction, Input, Output) VALUES (?,?,?,?,?,?)', tuple(row))
-                            row = (df_new[0][0],df_new[0][1],df_new[0][2],df_new[0][3],df_new[0][13],Instruction_name,input_name,Answer,domain_tag,thai_spec,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
-                            cursor.execute("INSERT INTO TD_insert(type_domain, article_id, rev, task_type, task_type_id, Instruction, Input, Output, domain_tags, thai_specific, review_status, comment, Actor, Date_actor ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row)
-                            cnxn.commit()
-                            st.success("Details successfully submitted!")
-                            st.rerun()
-                            # from streamlit_js_eval import streamlit_js_eval
-                            # streamlit_js_eval(js_expressions="parent.window.location.reload()")
-                            #anno.app()
-                            #row = (df_new[0][0],df_new[0][1],df_new[0][2],df_new[0][3],Instruction_name,input_name,Answer,domain_tag,thai_spec,review_status,comment_name,st.session_state['userName'],datetime.now())
+                        try: 
+                                row = (df_new[0][0],reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                                cursor.execute("INSERT INTO TD_insert_chosen_reject(id_keys, reject_text1, reject_text2, status_review, comment, actor, date_actor ) VALUES (?,?,?,?,?,?,?)", row)
+                                cnxn.commit()
+                                st.success("Details successfully submitted!")
+                                st.rerun()
                         except Exception as e:
-                            #print("The error is: ",e)
-                            st.error(e)
+                                st.error(e)
 
             else:
-                 if st.session_state['loggedIn'] == False or "USER" in st.session_state['userName'] :
+                 if st.session_state['loggedIn'] == False or "USER" not in st.session_state['userName']:
                       st.subheader("Please login again")
                  else:
                       st.subheader("Data all complete")

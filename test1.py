@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-import home , main , anno ,yoursuccess#, trending, test, your, about
+import home , main , anno ,yoursuccess , chre #, trending, test, your, about
 st.set_page_config(
         page_title="Instruction Dataset",
 )
@@ -22,7 +22,7 @@ class MultiApp:
         with st.sidebar:        
             app = option_menu(
                 menu_title='Instruction ',
-                options=['Home','Main','Annotation','Your success','about'],
+                options=['Home','Main', 'Chosen & Reject','Annotation','Your success','about'],
                 icons=['house-fill','person-circle','trophy-fill','chat-fill','info-circle-fill'],
                 menu_icon='chat-text-fill',
                 default_index=1,
@@ -95,12 +95,13 @@ class MultiApp:
             home.app()
         if app == "Main":
             main.app()
+        if app == 'Chosen & Reject':
+            chre.app()
         if app == "Annotation":
             anno.app()        
         if app == 'Your success':
             yoursuccess.app()
-        # if app == 'about':
-        #     about.app()    
+            
              
           
              
