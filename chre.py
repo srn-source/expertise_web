@@ -251,7 +251,7 @@ def app():
                     print("ok")
                 else:
                     break
-            df_new = cursor.execute("SELECT TOP 1 * from View_insert_chosen_reject WHERE actor = {} and date_actor IS NULL;".format("'"+st.session_state['userName']+ "'"))
+            df_new = cursor.execute("SELECT TOP 1 * from View_insert_chosen_reject WHERE actor = {} and date_actor IS NULL ORDER BY NEWID();".format("'"+st.session_state['userName']+ "'"))
             df_new = df_new.fetchall()
 
             
@@ -262,10 +262,10 @@ def app():
                 df_count = df_count.fetchall()
                 st.subheader( "ID: " + df_new[0][0] + " (Done: " + str(df_count[0][0]) + ")", divider='rainbow')
                 if df_new[0][1] == '':
-                    if "Medical" in df_new[0][0]:
+                    if "Medical" in df_new[0][0] and ("Open" in df_new[0][7] or "Classification" in df_new[0][7] or "Creative" in df_new[0][7] or "choice" in df_new[0][7] or "Brainstorming" in df_new[0][7]):
                         st.markdown(df_new[0][5])
                     if "Open" in df_new[0][7] or "Classification" in df_new[0][7] or "Creative" in df_new[0][7] or "choice" in df_new[0][7] or "Brainstorming" in df_new[0][7]:
-                        st.markdown("Link ref.: "+df_new[0][6])
+                        st.markdown("Hint: "+df_new[0][6])
 
                     st.subheader("Type: "+ df_new[0][7])
 

@@ -254,21 +254,18 @@ def app():
                     break
             df_new = cursor.execute("SELECT TOP 1 * from View_info_insert WHERE actor_master = {} and date_insert IS NULL;".format("'"+st.session_state['userName']+ "'"))
             df_new = df_new.fetchall()
-            #print(df_new)
+            print(df_new)
             if len(df_new)  == 1:
-                #ggg =""
 
                 st.subheader(df_new[0][11], divider='rainbow')
-                if "Medical" in df_new[0][0]:
-                        st.markdown(df_new[0][10])
-                #st.markdown(df_new[0][10])
-                #st.markdown("Link ref.: "+df_new[0][12])
+                if "Medical" in df_new[0][0] and ("Open" in df_new[0][3] or "Classification" in df_new[0][3] or "Creative" in df_new[0][3] or "choice" in df_new[0][3] or "Brainstorming" in df_new[0][3]):
+                    st.markdown(df_new[0][10])
+
                 if "Open" in df_new[0][3] or "Classification" in df_new[0][3] or "Creative" in df_new[0][3] or "choice" in df_new[0][3] or "Brainstorming" in df_new[0][3]:
                     st.markdown("Link ref.: "+df_new[0][12])
+
                 st.subheader("Instruction Task Type: "+ df_new[0][3])
-                #print(df_new["id"].values[0])
-                #ids = df_new["id"].values[0]
-                # print(df_new["Instruction"].values[0])
+                
                 
                 Instruction_name = st.text_area(label="Instruction (Question)*", height= 100, value=df_new[0][4])
                 input_name = st.text_area(label="Input", height= 200, value=df_new[0][5])
