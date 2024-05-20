@@ -3,6 +3,8 @@ import streamlit as st
 import home
 import pyodbc
 import pandas as pd
+from ollama import Client
+
 #cnxn = pyodbc.connect(
 #                "DRIVER={ODBC Driver 17 for SQL Server};encrypt=no;SERVER="
 #                + st.secrets["server"]
@@ -96,6 +98,8 @@ def app():
         
         try:
         
+            userName = userName.strip()
+            password = password.strip()
 
             userName = "'" + userName + "'"
             password = "'" + password + "'"
@@ -122,7 +126,6 @@ def app():
             while True:
                 if not cnxn:
                     cursor, cnxn = reconnect()
-                    print("ok")
                 else:
                     break
             count = 0
@@ -302,7 +305,7 @@ def app():
                     #print("2")
 
                     import pandas as pd
-
+                    
                     # df1 = pd.read_csv(r'C:\Users\BeEr\Downloads\iapp_tydi_4000.csv')
                     # df1 = df1.fillna('')
                     # print(df1.head(3))
