@@ -3,7 +3,7 @@ import streamlit as st
 import home
 import pyodbc
 import pandas as pd
-from ollama import Client
+# from ollama import Client
 
 #cnxn = pyodbc.connect(
 #                "DRIVER={ODBC Driver 17 for SQL Server};encrypt=no;SERVER="
@@ -88,7 +88,7 @@ def app():
     #             cur1.execute(query)
     #             #print(cur.execute(query))
     #         return cur1.fetchall()
-    @st.cache_data
+    #@st.cache_data
     def login(userName: str, password: str) -> bool:
         
         # Initialize connection.
