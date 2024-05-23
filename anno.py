@@ -224,6 +224,7 @@ def app():
     if st.session_state['loggedIn'] == False:
         st.error("Please login")
         st.stop()
+    st.session_state['ids'] = []
     with st.form(key="vendor_form" , clear_on_submit=True):
             # conn = st.connection("gsheets", type=GSheetsConnection)
             # data = conn.read(worksheet = "Sheet1", usecols = list(range(4)))
@@ -254,7 +255,7 @@ def app():
                     break
             df_new = cursor.execute("SELECT TOP 1 * from View_info_insert WHERE actor_master = {} and date_insert IS NULL;".format("'"+st.session_state['userName']+ "'"))
             df_new = df_new.fetchall()
-            print(df_new)
+            #print(df_new)
             if len(df_new)  == 1:
 
                 st.subheader(df_new[0][11], divider='rainbow')

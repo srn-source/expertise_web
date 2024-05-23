@@ -47,7 +47,7 @@ def make_autopct(values):
     return my_autopct
 
 def app():
-    
+    st.session_state['ids'] = []
     # Pie chart, where the slices will be ordered and plotted counter-clockwise:
     if st.session_state['loggedIn'] :
         st.subheader("Your progress", divider='rainbow')

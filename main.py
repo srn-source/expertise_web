@@ -42,7 +42,7 @@ def reconnect():
     return cursor, cnxn
 
 def app():
-
+    st.session_state['ids'] = []
     headerSection = st.container()
     mainSection = st.container()
     loginSection = st.container()
@@ -153,6 +153,7 @@ def app():
     def LoggedOut_Clicked():
         st.session_state['loggedIn'] = False
         st.session_state['userName'] = ''
+        st.session_state['ids'] = []
         
     def show_logout_page():
         loginSection.empty()
@@ -164,9 +165,10 @@ def app():
         if login(userName, password):
             st.session_state['loggedIn'] = True
             st.session_state['userName'] = userName
-            
+            st.session_state['ids'] = []
         else:
             st.session_state['loggedIn'] = False
+            st.session_state['ids'] = []
             st.error("Invalid user name or password")
         
     def show_login_page():
@@ -292,7 +294,7 @@ def app():
     with headerSection:
             st.title("Login")
             #first run will have nothing in session_state
-            
+            st.session_state['ids'] = []
             if 'loggedIn' not in st.session_state:
                 st.session_state['loggedIn'] = False
                 show_login_page() 
@@ -428,7 +430,7 @@ def app():
                     # print(merge_table1.head())
                     # merge_table = pd.merge(merge_table1, df_all_info_v1,  left_on=['keys'], right_on=['article_id_info'] , how="left" )
                     # print("merge_table : " ,len(merge_table))
-                    # merge_table.to_csv(f"D:\expertise_web\data_original\merge_table_v1.csv" , encoding="utf-8")
+                    # merge_table.to_csv(f"D:\expertise_web\data_original\merge_table_v2.csv" , encoding="utf-8")
 
 
 

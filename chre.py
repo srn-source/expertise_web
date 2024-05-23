@@ -216,14 +216,26 @@ def reconnect():
                 + "Beer1234"
             )
     cursor = cnxn.cursor()
-    return cursor, cnxn
+    return cursor, cnxn 
+
 
 def app():
     #print("====> ",st.session_state)
     if st.session_state['loggedIn'] == False:
         st.error("Please login")
         st.stop()
-    with st.form(key="vendor_form" , clear_on_submit=True):
+    if len(st.session_state['ids']) > 2:
+        st.error("Please logout and login again")
+        st.stop()
+
+    cursor, cnxn = reconnect()
+    while True:
+            if not cnxn:
+                cursor, cnxn = reconnect()
+            else:
+                break
+    
+    with st.form(key="vendor_form1" , clear_on_submit=True):
             # conn = st.connection("gsheets", type=GSheetsConnection)
             # data = conn.read(worksheet = "Sheet1", usecols = list(range(4)))
             # sql = '''
@@ -244,25 +256,22 @@ def app():
             # #print("user = ",st.session_state['userName'])
             # df_new = conn.query(sql=sql.format(type1 = "'"+ st.session_state['userName'] + "'"))
             # print(df_new)
-            cursor, cnxn = reconnect()
-            while True:
-                if not cnxn:
-                    cursor, cnxn = reconnect()
-                    print("ok")
-                else:
-                    break
+            
+            
+            print("=======================================")
             df_new = cursor.execute("SELECT TOP 1 * from View_insert_chosen_reject WHERE actor = {} and date_actor IS NULL ORDER BY NEWID();".format("'"+st.session_state['userName']+ "'"))
             df_new = df_new.fetchall()
-
-            
             #print(df_new)
-            if len(df_new)  >2 :
+
+            if len(df_new)  == 1 :
                 
-                df_count = cursor.execute("SELECT COUNT(*) from View_insert_chosen_reject WHERE actor = {} and date_actor IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
+                df_count = cursor.execute("SELECT COUNT(*) from View_insert_chosen_reject WHERE actor = {} and status_review = '' and date_actor IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
                 df_count = df_count.fetchall()
                 st.subheader( "ID: " + df_new[0][0] + " (Done: " + str(df_count[0][0]) + ")", divider='rainbow')
 
-                count_answer = 0
+                #st.subheader( "ID: " + df_new[0][0], divider='rainbow')
+
+                
                 if df_new[0][1] == '':
                     if "Medical" in df_new[0][0] and ("Open" in df_new[0][7] or "Classification" in df_new[0][7] or "Creative" in df_new[0][7] or "choice" in df_new[0][7] or "Brainstorming" in df_new[0][7]):
                         st.markdown(df_new[0][5])
@@ -289,9 +298,12 @@ def app():
                     # st.subheader("Context: "+df_new[0][1])
                     # st.subheader("Answer: "+df_new[0][3])
 
-                
+                #idk = st.text_input(label= "ID:", value=df_new[0][0] , disabled = True )
                 reject1 = st.text_area(label="Reject 1*", height= 200, value="")
                 reject2 = st.text_area(label="Reject 2*", height= 200, value="")
+
+                
+
                 
                 #years_in_business = st.slider("Years in Business", 0, 50, 5)
                 #onboarding_date = st.date_input(label="Onboarding Date" )
@@ -308,42 +320,57 @@ def app():
                 
 
                 #If the submit button is pressed
-                #print("df_new[0][0] =" , df_new[0][0])
+                print("df_new[0][0] =" , df_new[0][0])
                 ids = df_new[0][0]
+                print("ids =" , ids)
+                st.session_state['ids'].append(ids)
+                print("st.session_state['ids'] =" , st.session_state['ids'])
                 if submit_button:
-                    # Check if all mandatory fields are filled
                     if review_status != "" :
-                        #print("ids =" , ids)
                         if  comment_name == "":
                             st.warning("please fill a reason why skip.")
-                            st.stop()
+                            st.session_state['ids'] = []
+                            st.rerun()
                         else:
                             try: 
-                                row = (ids,reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
-                                #print("row1 ==>", row)
-                                cursor.execute("INSERT INTO TD_insert_chosen_reject(id_keys, reject_text1, reject_text2, status_review, comment, actor, date_actor ) VALUES (?,?,?,?,?,?,?)", row)
-                                cnxn.commit()
-                                st.success("You skip!!")
-                                st.rerun()
+                                if len(st.session_state['ids']) == 2:
+                                    row1 = (st.session_state['ids'][0],reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                                    print("row1 ==>", row1)
+                                    cursor.execute("INSERT INTO TD_insert_chosen_reject(id_keys, reject_text1, reject_text2, status_review, comment, actor, date_actor ) VALUES (?,?,?,?,?,?,?)", row1)
+                                    cnxn.commit()
+                                    st.success("You skip!!")
+                                    st.session_state['ids'] = []
+                                    st.rerun()
+                                else:
+                                    st.session_state['ids'] = []
+                                    st.rerun()
                             except Exception as e:
+                                st.session_state['ids'] = []
                                 st.error(e)
                     elif reject1 =="" or reject2 == "":
                         st.warning("Ensure all mandatory fields are filled.")
-                        st.stop()
+                        st.session_state['ids'] = []
+                        st.rerun()
                     else:
-                        # Create a new row of vendor data
-                        try: 
-                                #print("ids =" , ids)
-                                row = (ids,reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
-                                #print("row2 ==>", row)
-                                cursor.execute("INSERT INTO TD_insert_chosen_reject(id_keys, reject_text1, reject_text2, status_review, comment, actor, date_actor ) VALUES (?,?,?,?,?,?,?)", row)
+                        try:    
+                             if len(st.session_state['ids']) == 2:
+                                #print("st.session_state['ids'] =" , st.session_state['ids'][0])
+                                row2 = (st.session_state['ids'][0],reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                                print("row2 ==>", row2)
+                                cursor.execute("INSERT INTO TD_insert_chosen_reject(id_keys, reject_text1, reject_text2, status_review, comment, actor, date_actor ) VALUES (?,?,?,?,?,?,?)", row2)
                                 cnxn.commit()
                                 st.success("Details successfully submitted!")
+                                st.session_state['ids'] = []
+                                st.rerun()
+                             else:
+                                st.session_state['ids'] = []
                                 st.rerun()
                         except Exception as e:
+                                st.session_state['ids'] = []
                                 st.error(e)
 
             else:
+                 st.session_state['ids'] = []
                  if st.session_state['loggedIn'] == False or "USER" not in st.session_state['userName']:
                       st.subheader("Please login again")
                  else:

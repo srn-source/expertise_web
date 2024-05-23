@@ -81,9 +81,11 @@ def SignUp_Clicked(userName, password):
 
 def app():
     st.title("Sign Up")
+    st.session_state['ids'] = []
     if not st.session_state['loggedIn'] :
         username = st.text_input(label="Username*")
         password = st.text_input(label="Password*" , type="password")
         st.button ("Sign Up", on_click=SignUp_Clicked, args= (username, password))
     else:
         st.markdown("Welcome K'" + st.session_state['userName'])
+    
