@@ -256,11 +256,13 @@ def app():
 
             
             #print(df_new)
-            if len(df_new)  == 1:
+            if len(df_new)  >2 :
                 
                 df_count = cursor.execute("SELECT COUNT(*) from View_insert_chosen_reject WHERE actor = {} and date_actor IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
                 df_count = df_count.fetchall()
                 st.subheader( "ID: " + df_new[0][0] + " (Done: " + str(df_count[0][0]) + ")", divider='rainbow')
+
+                count_answer = 0
                 if df_new[0][1] == '':
                     if "Medical" in df_new[0][0] and ("Open" in df_new[0][7] or "Classification" in df_new[0][7] or "Creative" in df_new[0][7] or "choice" in df_new[0][7] or "Brainstorming" in df_new[0][7]):
                         st.markdown(df_new[0][5])
@@ -306,16 +308,19 @@ def app():
                 
 
                 #If the submit button is pressed
+                #print("df_new[0][0] =" , df_new[0][0])
+                ids = df_new[0][0]
                 if submit_button:
                     # Check if all mandatory fields are filled
                     if review_status != "" :
-                        print(review_status)
+                        #print("ids =" , ids)
                         if  comment_name == "":
                             st.warning("please fill a reason why skip.")
                             st.stop()
                         else:
                             try: 
-                                row = (df_new[0][0],reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                                row = (ids,reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                                #print("row1 ==>", row)
                                 cursor.execute("INSERT INTO TD_insert_chosen_reject(id_keys, reject_text1, reject_text2, status_review, comment, actor, date_actor ) VALUES (?,?,?,?,?,?,?)", row)
                                 cnxn.commit()
                                 st.success("You skip!!")
@@ -328,7 +333,9 @@ def app():
                     else:
                         # Create a new row of vendor data
                         try: 
-                                row = (df_new[0][0],reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                                #print("ids =" , ids)
+                                row = (ids,reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                                #print("row2 ==>", row)
                                 cursor.execute("INSERT INTO TD_insert_chosen_reject(id_keys, reject_text1, reject_text2, status_review, comment, actor, date_actor ) VALUES (?,?,?,?,?,?,?)", row)
                                 cnxn.commit()
                                 st.success("Details successfully submitted!")
