@@ -225,8 +225,9 @@ def app():
         st.error("Please login")
         st.stop()
     if len(st.session_state['ids']) > 2:
-        st.error("Please logout and login again")
-        st.stop()
+        st.session_state['ids'] = []
+        # st.error("Please logout and login again")
+        # st.stop()
 
     cursor, cnxn = reconnect()
     while True:
@@ -258,8 +259,8 @@ def app():
             # print(df_new)
             
             
-            print("=======================================")
-            df_new = cursor.execute("SELECT TOP 1 * from View_insert_chosen_reject WHERE actor = {} and date_actor IS NULL ORDER BY NEWID();".format("'"+st.session_state['userName']+ "'"))
+            print("=======================================") #ORDER BY NEWID()
+            df_new = cursor.execute("SELECT TOP 1 * from View_insert_chosen_reject WHERE actor = {} and (id_keys like 'Finance%' or id_keys like 'Legal%' or id_keys like 'Medical%') and date_actor IS NULL ;".format("'"+st.session_state['userName']+ "'"))
             df_new = df_new.fetchall()
             #print(df_new)
 
@@ -298,7 +299,7 @@ def app():
                     # st.subheader("Context: "+df_new[0][1])
                     # st.subheader("Answer: "+df_new[0][3])
 
-                #idk = st.text_input(label= "ID:", value=df_new[0][0] , disabled = True )
+                #idk = st.text_input(label= "ID:", value=df_new[0][0] )
                 reject1 = st.text_area(label="Reject 1*", height= 200, value="")
                 reject2 = st.text_area(label="Reject 2*", height= 200, value="")
 
@@ -330,18 +331,25 @@ def app():
                         if  comment_name == "":
                             st.warning("please fill a reason why skip.")
                             st.session_state['ids'] = []
-                            st.rerun()
+                            st.stop()
                         else:
                             try: 
-                                if len(st.session_state['ids']) == 2:
-                                    row1 = (st.session_state['ids'][0],reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                                # if len(st.session_state['ids']) == 2:
+                                #     row1 = (st.session_state['ids'][0],reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                                #     print("row1 ==>", row1)
+                                #     cursor.execute("INSERT INTO TD_insert_chosen_reject(id_keys, reject_text1, reject_text2, status_review, comment, actor, date_actor ) VALUES (?,?,?,?,?,?,?)", row1)
+                                #     cnxn.commit()
+                                #     st.success("You skip!!")
+                                #     st.session_state['ids'] = []
+                                #     st.rerun()
+                                # else:
+                                #     st.session_state['ids'] = []
+                                #     st.rerun()
+                                    row1 = (df_new[0][0],reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
                                     print("row1 ==>", row1)
                                     cursor.execute("INSERT INTO TD_insert_chosen_reject(id_keys, reject_text1, reject_text2, status_review, comment, actor, date_actor ) VALUES (?,?,?,?,?,?,?)", row1)
                                     cnxn.commit()
                                     st.success("You skip!!")
-                                    st.session_state['ids'] = []
-                                    st.rerun()
-                                else:
                                     st.session_state['ids'] = []
                                     st.rerun()
                             except Exception as e:
@@ -350,19 +358,25 @@ def app():
                     elif reject1 =="" or reject2 == "":
                         st.warning("Ensure all mandatory fields are filled.")
                         st.session_state['ids'] = []
-                        st.rerun()
+                        st.stop()
                     else:
                         try:    
-                             if len(st.session_state['ids']) == 2:
-                                #print("st.session_state['ids'] =" , st.session_state['ids'][0])
-                                row2 = (st.session_state['ids'][0],reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                            #  if len(st.session_state['ids']) == 2:
+                            #     # row2 = (st.session_state['ids'][0],reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                            #     # print("row2 ==>", row2)
+                            #     # cursor.execute("INSERT INTO TD_insert_chosen_reject(id_keys, reject_text1, reject_text2, status_review, comment, actor, date_actor ) VALUES (?,?,?,?,?,?,?)", row2)
+                            #     # cnxn.commit()
+                            #     # st.success("Details successfully submitted!")
+                            #     # st.session_state['ids'] = []
+                            #     # st.rerun()
+                            #  else:
+                            #     st.session_state['ids'] = []
+                            #     st.rerun()
+                                row2 = (df_new[0][0],reject1,reject2,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
                                 print("row2 ==>", row2)
                                 cursor.execute("INSERT INTO TD_insert_chosen_reject(id_keys, reject_text1, reject_text2, status_review, comment, actor, date_actor ) VALUES (?,?,?,?,?,?,?)", row2)
                                 cnxn.commit()
                                 st.success("Details successfully submitted!")
-                                st.session_state['ids'] = []
-                                st.rerun()
-                             else:
                                 st.session_state['ids'] = []
                                 st.rerun()
                         except Exception as e:

@@ -22,7 +22,7 @@ class MultiApp:
         with st.sidebar:        
             app = option_menu(
                 menu_title='Instruction ',
-                options=['Home','Main', 'Chosen & Reject','Annotation','Your success','about'],
+                options=['Home','Main', 'Chosen & Reject','Annotation','Your success'],
                 icons=['house-fill','person-circle','trophy-fill','chat-fill','info-circle-fill'],
                 menu_icon='chat-text-fill',
                 default_index=1,
@@ -92,14 +92,18 @@ class MultiApp:
 
         
         if app == "Home":
+            st.session_state['ids'] = []
             home.app()
         if app == "Main":
+            st.session_state['ids'] = []
             main.app()
         if app == 'Chosen & Reject':
             chre.app()
         if app == "Annotation":
+            st.session_state['ids'] = []
             anno.app()        
         if app == 'Your success':
+            st.session_state['ids'] = []
             yoursuccess.app()
             
              
