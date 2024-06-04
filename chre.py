@@ -264,7 +264,7 @@ def app():
             df_new = df_new.fetchall()
             #print(df_new)
 
-            if len(df_new)  == 1 :
+            if len(df_new)  == 0 :
                 
                 df_count = cursor.execute("SELECT COUNT(*) from View_insert_chosen_reject WHERE actor = {} and status_review = '' and date_actor IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
                 df_count = df_count.fetchall()
