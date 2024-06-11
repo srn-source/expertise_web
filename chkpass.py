@@ -243,8 +243,11 @@ def app():
      "PASS",
      "NOT PASS"
     ]
+    df_count = cursor.execute("SELECT COUNT(*) from View_vistec_check WHERE Actor_vistec = {}  and vistec_chk IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
+    df_count = df_count.fetchall()
+    
     if len(df_new)  == 1:
-       st.subheader(df_new[0][1], divider='rainbow')
+       st.subheader(df_new[0][1]  + " (Done: " + str(df_count[0][0]) + ")", divider='rainbow')
        st.subheader("Type:")
        st.markdown(df_new[0][3])
        st.subheader("Instruction:")
