@@ -221,7 +221,7 @@ def reconnect():
 
 def app():
     #print("====> ",st.session_state)
-    if st.session_state['loggedIn'] == False or "ADMIN" not in st.session_state['userName'] :
+    if st.session_state['loggedIn'] == False or "ADMIN" not in st.session_state['userName'].upper() :
         st.error("Please login")
         st.stop()
     st.session_state['ids'] = []
@@ -245,8 +245,23 @@ def app():
     ]
     df_count = cursor.execute("SELECT COUNT(*) from View_vistec_check WHERE Actor_vistec = {}  and vistec_chk IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
     df_count = df_count.fetchall()
+
+    if "ADMIN2" in st.session_state['userName'].upper():
+       df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE review_status = 'PASS' and type_domain = 'Finance' ORDER BY NEWID()")
+       df_new1 = df_new1.fetchall()
+
+       st.subheader(df_new1[0][1], divider='rainbow')
+       st.subheader("Type:")
+       st.markdown(df_new1[0][3])
+       st.subheader("Instruction:")
+       st.markdown(df_new1[0][4])
+       st.subheader("Input:")
+       st.markdown(df_new1[0][5])
+       st.subheader("Output:")
+       st.markdown(df_new1[0][6])
+
     
-    if len(df_new)  == 1:
+    if len(df_new)  == 1 and "ADMIN2" not in st.session_state['userName'].upper():
        st.subheader(df_new[0][1]  + " (Done: " + str(df_count[0][0]) + ")", divider='rainbow')
        st.subheader("Type:")
        st.markdown(df_new[0][3])

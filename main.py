@@ -303,11 +303,59 @@ def app():
                 if st.session_state['loggedIn']:
                     show_logout_page() 
                     #print("You already logged in")   
-                    #show_main_page()  
-                    #print("2")
+                    #show_main_page()
 
-                    import pandas as pd
-                    
+                    #import pandas as pd
+                    #from urllib.parse import urlsplit
+                    # df2 = pd.DataFrame({'keys': ['test'],
+                    #                    'batch': ['0']})
+
+                    # for i in range(1,10):
+                    #     f = f'D:\expertise_web\data_original\Retail{i}.csv'
+                    #     df = pd.read_csv(f)
+
+                    #     article_csv = pd.read_csv(r'D:\data_instruction_backup\Master table.csv')
+                    #     print("original : " ,len(df))
+                    #     merge_table = pd.merge(df, article_csv,  left_on=['keys'], right_on=['keys'] , how="left" ,  indicator = True) 
+                    #     print("merge_table : " ,len(merge_table))
+
+                    #     print(merge_table.head())
+                    #     filtered_df = merge_table[merge_table['url'].str.contains('longtunman|finnomena') ]
+                    #     print("all = " , len(filtered_df))
+
+                    #article_csv = pd.read_csv(r'D:\data_instruction_backup\Master table.csv')
+
+                    # import pandas as pd
+                    # from urllib.parse import urlsplit
+                    # article_csv = pd.read_csv(r'D:\data_instruction_backup\Master table.csv')
+                    # list_url_fi = []
+                    # list_url_re = []
+                    # list_url_le = []
+                    # list_url_me = []
+                    # for index, row in article_csv.iterrows():
+                    #     if row["Topic"] == "Finance":
+                    #         list_url_fi.append(urlsplit(row["url"]).netloc)
+                    #     elif row["Topic"] == "Retail":
+                    #         list_url_re.append(urlsplit(row["url"]).netloc)
+                    #     elif row["Topic"] == "Legal":
+                    #         list_url_le.append(urlsplit(row["url"]).netloc)
+                    #     elif row["Topic"] == "Medical":
+                    #         list_url_me.append(urlsplit(row["url"]).netloc)
+
+                    # dictionary = {}
+                    # for item in list_url_fi:
+                    #     dictionary[item] = dictionary.get(item, 0) + 1
+                    # for item in list_url_re:
+                    #     dictionary[item] = dictionary.get(item, 0) + 1
+                    # for item in list_url_le:
+                    #     dictionary[item] = dictionary.get(item, 0) + 1
+                    # for item in list_url_me:
+                    #     dictionary[item] = dictionary.get(item, 0) + 1
+                    # print(pd.DataFrame(dictionary.items(), columns=['web', 'count']))
+                    # all_web = pd.DataFrame(dictionary.items(), columns=['web', 'count'])
+                    # all_web.to_csv(f"D:\expertise_web\data_original\web_count.csv" , encoding="utf-8")
+
+
                     # df1 = pd.read_csv(r'C:\Users\BeEr\Downloads\iapp_tydi_4000.csv')
                     # df1 = df1.fillna('')
                     # print(df1.head(3))
@@ -430,7 +478,7 @@ def app():
                     # print(merge_table1.head())
                     # merge_table = pd.merge(merge_table1, df_all_info_v1,  left_on=['keys'], right_on=['article_id_info'] , how="left" )
                     # print("merge_table : " ,len(merge_table))
-                    # merge_table.to_csv(f"D:\expertise_web\data_original\merge_table_v2.csv" , encoding="utf-8")
+                    # merge_table.to_csv(f"D:\expertise_web\data_original\merge_table_v5.csv" , encoding="utf-8")
 
 
 
