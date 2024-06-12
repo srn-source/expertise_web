@@ -298,11 +298,11 @@ def app():
                         row2 = (df_new[0][1],review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
                         print("row2 ==>", row2)
                         
-                        chk1 = cursor.execute("SELECT TOP 1 from TD_vistec_chk WHERE article_id = {}".format("'"+df_new[0][1]+ "'"))
-                        chk1 = chk1.fetchall()
-                        if len(chk1) != 0:
-                            delstatmt = "DELETE FROM TD_vistec_chk WHERE article_id = '%s'" % (df_new[0][1],)
-                            cursor.execute(delstatmt)
+                        # chk1 = cursor.execute("SELECT TOP 1 from TD_vistec_chk WHERE article_id = {}".format("'"+df_new[0][1]+ "'"))
+                        # chk1 = chk1.fetchall()
+                        # if len(chk1) != 0:
+                        #     delstatmt = "DELETE FROM TD_vistec_chk WHERE article_id = '%s'" % (df_new[0][1],)
+                        #     cursor.execute(delstatmt)
 
                         cursor.execute("INSERT INTO TD_vistec_chk(article_id, review_status, comment, Actor, Date_actor ) VALUES (?,?,?,?,?)", row2)
                         cnxn.commit()
