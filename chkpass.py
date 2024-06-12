@@ -244,7 +244,7 @@ def app():
      "NOT PASS"
     ]
     df_count = cursor.execute("SELECT COUNT(*) from View_vistec_check WHERE Actor_vistec = {}  and vistec_chk IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
-    df_count = df_count.fetchall()
+    df_count = df_count.fetchall() 
 
     if "ADMIN2" in st.session_state['userName'].upper():
        df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec = 'PASS' and type_domain = 'Finance' ORDER BY NEWID()")
@@ -263,7 +263,7 @@ def app():
     
     if len(df_new)  == 1 and "ADMIN2" not in st.session_state['userName'].upper():
 
-       st.subheader(df_new[0][1]  + " (Done: " + str(df_count[0][0]) + ")", divider='rainbow')
+       st.subheader(df_new[0][1]  + " ( Done: " + str(df_count[0][0]) + " )", divider='rainbow')
        st.subheader("Type:")
        st.markdown(df_new[0][3])
        st.subheader("Instruction:")
