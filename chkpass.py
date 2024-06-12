@@ -247,7 +247,7 @@ def app():
     df_count = df_count.fetchall()
 
     if "ADMIN2" in st.session_state['userName'].upper():
-       df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE review_status = 'PASS' and type_domain = 'Finance' ORDER BY NEWID()")
+       df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec = 'PASS' and type_domain = 'Legal' ORDER BY NEWID()")
        df_new1 = df_new1.fetchall()
 
        st.subheader(df_new1[0][1], divider='rainbow')
@@ -262,6 +262,9 @@ def app():
 
     
     if len(df_new)  == 1 and "ADMIN2" not in st.session_state['userName'].upper():
+    #    df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec = 'PASS' and type_domain = 'Legal' ORDER BY NEWID()")
+    #    df_new = df_new.fetchall()
+
        st.subheader(df_new[0][1]  + " (Done: " + str(df_count[0][0]) + ")", divider='rainbow')
        st.subheader("Type:")
        st.markdown(df_new[0][3])
@@ -294,6 +297,13 @@ def app():
                     try:
                         row2 = (df_new[0][1],review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
                         print("row2 ==>", row2)
+                        
+                        chk1 = cursor.execute("SELECT TOP 1 from TD_vistec_chk WHERE article_id = {}".format("'"+df_new[0][1]+ "'"))
+                        chk1 = chk1.fetchall()
+                        if len(chk1) != 0:
+                            delstatmt = "DELETE FROM TD_vistec_chk WHERE article_id = '%s'" % (df_new[0][1],)
+                            cursor.execute(delstatmt)
+
                         cursor.execute("INSERT INTO TD_vistec_chk(article_id, review_status, comment, Actor, Date_actor ) VALUES (?,?,?,?,?)", row2)
                         cnxn.commit()
                         st.success("Details successfully submitted!")
