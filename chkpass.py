@@ -235,9 +235,17 @@ def app():
             break
     
     #df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL ")
+    #and article_id like '%9'
+    if "ADMIN3" in st.session_state['userName'].upper(): 
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%9' or article_id like '%8')")
+        df_new = df_new.fetchall()
+    if "ADMIN4" in st.session_state['userName'].upper(): 
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%6' or article_id like '%7')")
+        df_new = df_new.fetchall()
+    else:
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%4' or article_id like '%5')")
+        df_new = df_new.fetchall()
 
-    df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL ")
-    df_new = df_new.fetchall()
     REVIEWSTATUS =[
         "",
      "PASS",
@@ -247,7 +255,7 @@ def app():
     df_count = df_count.fetchall() 
 
     if "ADMIN2" in st.session_state['userName'].upper():
-       df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec = 'PASS' and type_domain = 'Finance' ORDER BY NEWID()")
+       df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec IS NOT NULL and  comment_vistec != ''  ")
        df_new1 = df_new1.fetchall()
 
        st.subheader(df_new1[0][1], divider='rainbow')
@@ -259,6 +267,12 @@ def app():
        st.markdown(df_new1[0][5])
        st.subheader("Output:")
        st.markdown(df_new1[0][6])
+       st.subheader("Comment:")
+       st.markdown(df_new1[0][18])
+    #    comment_name1 = st.text_area(label="Instruction:", height= 50, value=df_new1[0][4])
+    #    comment_name2 = st.text_area(label="Input:", height= 200, value=df_new1[0][5])
+    #    comment_name3 = st.text_area(label="Output:", height= 400, value=df_new1[0][6])
+
 
     
     if len(df_new)  == 1 and "ADMIN2" not in st.session_state['userName'].upper():
