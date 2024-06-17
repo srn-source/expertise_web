@@ -239,7 +239,7 @@ def app():
     if "ADMIN3" in st.session_state['userName'].upper(): 
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%9' or article_id like '%8')")
         df_new = df_new.fetchall()
-    if "ADMIN4" in st.session_state['userName'].upper(): 
+    elif "ADMIN4" in st.session_state['userName'].upper(): 
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%6' or article_id like '%7')")
         df_new = df_new.fetchall()
     else:
