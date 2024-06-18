@@ -242,8 +242,11 @@ def app():
     elif "ADMIN4" in st.session_state['userName'].upper(): 
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%6' or article_id like '%7')")
         df_new = df_new.fetchall()
+    elif "ADMIN5" in st.session_state['userName'].upper(): 
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%0' or article_id like '%1')")
+        df_new = df_new.fetchall()
     else:
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%4' or article_id like '%5')")
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%2' or article_id like '%3' or article_id like '%4' or article_id like '%5')")
         df_new = df_new.fetchall()
 
     REVIEWSTATUS =[
@@ -255,18 +258,19 @@ def app():
     df_count = df_count.fetchall() 
 
     if "ADMIN2" in st.session_state['userName'].upper():
-       df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec IS NOT NULL and  comment_vistec != ''  ")
+       df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec IS NOT NULL and  comment_vistec != '' ")
+       #df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE article_id = 'Legal_49319'  ORDER BY NEWID()")
        df_new1 = df_new1.fetchall()
 
        st.subheader(df_new1[0][1], divider='rainbow')
        st.subheader("Type:")
        st.markdown(df_new1[0][3])
        st.subheader("Instruction:")
-       st.markdown(df_new1[0][4])
+       st.markdown(df_new1[0][4].replace('\n', '<br>'), unsafe_allow_html=True)
        st.subheader("Input:")
-       st.markdown(df_new1[0][5])
+       st.markdown(df_new1[0][5].replace('\n', '<br>'), unsafe_allow_html=True)
        st.subheader("Output:")
-       st.markdown(df_new1[0][6])
+       st.markdown(df_new1[0][6].replace('\n', '<br>'), unsafe_allow_html=True )
        st.subheader("Comment:")
        st.markdown(df_new1[0][18])
     #    comment_name1 = st.text_area(label="Instruction:", height= 50, value=df_new1[0][4])
@@ -281,11 +285,12 @@ def app():
        st.subheader("Type:")
        st.markdown(df_new[0][3])
        st.subheader("Instruction:")
-       st.markdown(df_new[0][4])
+       st.markdown(df_new[0][4].replace('\n', '<br>'), unsafe_allow_html=True)
        st.subheader("Input:")
-       st.markdown(df_new[0][5])
+       st.markdown(df_new[0][5].replace('\n', '<br>'), unsafe_allow_html=True)
        st.subheader("Output:")
-       st.markdown(df_new[0][6])
+       st.markdown(df_new[0][6].replace('\n', '<br>'), unsafe_allow_html=True)
+
 
 
        with st.form(key="vendor_form1" , clear_on_submit=True):
