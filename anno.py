@@ -253,11 +253,15 @@ def app():
                     print("ok")
                 else:
                     break
-            df_new = cursor.execute("SELECT TOP 1 * from View_info_insert WHERE actor_master = {} and date_insert IS NULL;".format("'"+st.session_state['userName']+ "'"))
+
+            if "FINANCE" in st.session_state['userName'].upper() or "LEGAL" in st.session_state['userName'].upper(): 
+                df_new = cursor.execute("SELECT TOP 1 * from View_info_insert WHERE actor_master = {} and date_insert IS NULL and (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%');".format("'"+st.session_state['userName']+ "'"))
+            else:
+                df_new = cursor.execute("SELECT TOP 1 * from View_info_insert WHERE actor_master = {} and date_insert IS NULL;".format("'"+st.session_state['userName']+ "'"))
             df_new = df_new.fetchall()
             #print(df_new)
             if len(df_new)  == 1:
-
+                
                 st.subheader(df_new[0][11], divider='rainbow')
                 if "Medical" in df_new[0][0] and ("Open" in df_new[0][3] or "Classification" in df_new[0][3] or "Creative" in df_new[0][3] or "choice" in df_new[0][3] or "Brainstorming" in df_new[0][3]):
                     st.markdown(df_new[0][10])
