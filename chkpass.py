@@ -263,10 +263,14 @@ def app():
     df_count = cursor.execute("SELECT COUNT(*) from View_vistec_check WHERE Actor_vistec = {}  and vistec_chk IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
     df_count = df_count.fetchall() 
 
-    if "ADMIN2" in st.session_state['userName'].upper():
+    if "ADMIN2" in st.session_state['userName'].upper() or "ADMIN6" in st.session_state['userName'].upper():
        #df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec IS NOT NULL and  comment_vistec != '' ORDER BY NEWID()")
-       df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' ORDER BY NEWID() ")
-       df_new1 = df_new1.fetchall()
+       if "ADMIN2" in st.session_state['userName'].upper():
+            df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Date_actor_wang < '2024-06-24'")
+            df_new1 = df_new1.fetchall()
+       else:
+           df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%5' or article_id like '%6' or article_id like '%7' or article_id like '%8' or article_id like '%9' ) and Date_actor_wang < '2024-06-24'")
+           df_new1 = df_new1.fetchall()
 
        st.subheader(df_new1[0][0], divider='rainbow')
     #    st.subheader("Type:")
@@ -279,6 +283,55 @@ def app():
        st.markdown(df_new1[0][7].replace('\n', '<br>'), unsafe_allow_html=True )
        st.subheader("Comment:")
        st.markdown(df_new1[0][2])
+
+       with st.form(key="vendor_form1" , clear_on_submit=True):
+                inst1 = st.text_area(label="Instruction:", height= 50, value=df_new1[0][5])
+                input1 = st.text_area(label="Input:", height= 200, value=df_new1[0][6])
+                outpu = st.text_area(label="Output:", height= 400, value=df_new1[0][7])
+
+                review_status = st.selectbox("Review Status", options=REVIEWSTATUS_WANG)
+                comment_name = st.text_area(label="Comment", height= 200, value="")
+                submit_button = st.form_submit_button(label="Submit Details")
+
+                can_save = 1
+                if submit_button:
+                        if review_status == "" :
+                            can_save == 0
+                            st.warning("please choose Review Status.")
+                            st.stop()
+                        elif review_status == "แก้ไขไม่ได้" :
+                            if  comment_name == "":
+                                can_save == 0
+                                st.warning("please fill a reason why NOT PASS.")
+                                st.stop()
+                            
+                        if can_save == 1:
+                            try:
+                                # row2 = (df_new[0][1],review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                                # print("row2 ==>", row2)
+
+                                # cursor.execute("INSERT INTO TD_vistec_chk(article_id, review_status, comment, Actor, Date_actor ) VALUES (?,?,?,?,?)", row2)
+                                # cnxn.commit()
+                                article_id = df_new1[0][0]
+                                row2 = (inst1, input1, outpu,review_status, comment_name ,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                                print("row2 ==>", row2)
+                                print("article_id ==>", article_id)
+
+                                # Construct the SQL UPDATE statement
+                                update_query = """
+                                    UPDATE TD_vistec_chk
+                                    SET instruction_wang = ?, input_wang = ?, output_wang = ?, review_wang = ?, comment_wang = ?, Actor_wang = ?, Date_actor_wang = ?
+                                    WHERE article_id = ?
+                                """
+
+                                # Execute the UPDATE statement
+                                cursor.execute(update_query, (*row2, article_id))
+                                cnxn.commit()
+                                st.success("Details successfully submitted!")
+                                st.rerun()
+
+                            except Exception as e:
+                                st.error(e)
     #    comment_name1 = st.text_area(label="Instruction:", height= 50, value=df_new1[0][5])
     #    comment_name2 = st.text_area(label="Input:", height= 200, value=df_new1[0][6])
     #    comment_name3 = st.text_area(label="Output:", height= 400, value=df_new1[0][7])
