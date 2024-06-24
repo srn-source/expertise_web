@@ -264,24 +264,24 @@ def app():
     df_count = df_count.fetchall() 
 
     if "ADMIN2" in st.session_state['userName'].upper():
-       df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec IS NOT NULL and  comment_vistec != '' ORDER BY NEWID()")
-       #df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE article_id = 'Legal_49319'  ORDER BY NEWID()")
+       #df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec IS NOT NULL and  comment_vistec != '' ORDER BY NEWID()")
+       df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' ORDER BY NEWID() ")
        df_new1 = df_new1.fetchall()
 
-       st.subheader(df_new1[0][1], divider='rainbow')
-       st.subheader("Type:")
-       st.markdown(df_new1[0][3])
+       st.subheader(df_new1[0][0], divider='rainbow')
+    #    st.subheader("Type:")
+    #    st.markdown(df_new1[0][3])
        st.subheader("Instruction:")
-       st.markdown(df_new1[0][4].replace('\n', '<br>'), unsafe_allow_html=True)
-       st.subheader("Input:")
        st.markdown(df_new1[0][5].replace('\n', '<br>'), unsafe_allow_html=True)
+       st.subheader("Input:")
+       st.markdown(df_new1[0][6].replace('\n', '<br>'), unsafe_allow_html=True)
        st.subheader("Output:")
-       st.markdown(df_new1[0][6].replace('\n', '<br>'), unsafe_allow_html=True )
+       st.markdown(df_new1[0][7].replace('\n', '<br>'), unsafe_allow_html=True )
        st.subheader("Comment:")
-       st.markdown(df_new1[0][18])
-    #    comment_name1 = st.text_area(label="Instruction:", height= 50, value=df_new1[0][4])
-    #    comment_name2 = st.text_area(label="Input:", height= 200, value=df_new1[0][5])
-    #    comment_name3 = st.text_area(label="Output:", height= 400, value=df_new1[0][6])
+       st.markdown(df_new1[0][2])
+    #    comment_name1 = st.text_area(label="Instruction:", height= 50, value=df_new1[0][5])
+    #    comment_name2 = st.text_area(label="Input:", height= 200, value=df_new1[0][6])
+    #    comment_name3 = st.text_area(label="Output:", height= 400, value=df_new1[0][7])
 
     if "ADMIN11" in st.session_state['userName'].upper() or "ADMIN12" in st.session_state['userName'].upper() or "ADMIN13" in st.session_state['userName'].upper() or "ADMIN14" in st.session_state['userName'].upper() or "ADMIN15" in st.session_state['userName'].upper():
        if "ADMIN11" in st.session_state['userName'].upper():

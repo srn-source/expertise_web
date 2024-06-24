@@ -260,6 +260,10 @@ def app():
             else:
                 df_new = cursor.execute("SELECT TOP 1 * from View_info_insert WHERE actor_master = {} and date_insert IS NULL;".format("'"+st.session_state['userName']+ "'"))
             df_new = df_new.fetchall()
+
+            if len(df_new)  == 0: #กรณีดาต้าหมด
+                df_new = cursor.execute("SELECT TOP 1 * from View_info_insert WHERE actor_master = {} and date_insert IS NULL;".format("'"+st.session_state['userName']+ "'"))
+                df_new = df_new.fetchall()
             #print(df_new)
             if len(df_new)  == 1:
                 
