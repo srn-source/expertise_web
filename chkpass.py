@@ -262,8 +262,9 @@ def app():
     ]
     df_count = cursor.execute("SELECT COUNT(*) from View_vistec_check WHERE Actor_vistec = {}  and vistec_chk IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
     df_count = df_count.fetchall() 
-
+    #print(st.session_state['userName'].upper())
     if "ADMIN2" in st.session_state['userName'].upper() or "ADMIN6" in st.session_state['userName'].upper():
+       #print("erererrrrrrrrrr")
        #df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec IS NOT NULL and  comment_vistec != '' ORDER BY NEWID()")
        if "ADMIN2" in st.session_state['userName'].upper():
             df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Date_actor_wang < '2024-06-24'")
@@ -422,7 +423,7 @@ def app():
 
 
     
-    if len(df_new)  == 1 and ( "ADMIN2" not in st.session_state['userName'].upper() and "ADMIN10" not in st.session_state['userName'].upper() and "ADMIN11" not in st.session_state['userName'].upper() and "ADMIN12" not in st.session_state['userName'].upper() and "ADMIN13" not in st.session_state['userName'].upper() and "ADMIN14" not in st.session_state['userName'].upper() and "ADMIN15" not in st.session_state['userName'].upper()):
+    if len(df_new)  == 1 and ( "ADMIN2" not in st.session_state['userName'].upper() and "ADMIN6" not in st.session_state['userName'].upper() and "ADMIN10" not in st.session_state['userName'].upper() and "ADMIN11" not in st.session_state['userName'].upper() and "ADMIN12" not in st.session_state['userName'].upper() and "ADMIN13" not in st.session_state['userName'].upper() and "ADMIN14" not in st.session_state['userName'].upper() and "ADMIN15" not in st.session_state['userName'].upper()):
 
        st.subheader(df_new[0][1]  + " ( Done: " + str(df_count[0][0]) + " )", divider='rainbow')
        st.subheader("Type:")
