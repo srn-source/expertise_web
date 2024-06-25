@@ -271,15 +271,15 @@ def app():
        #df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec IS NOT NULL and  comment_vistec != '' ORDER BY NEWID()")
        if "ADMIN2" in st.session_state['userName'].upper():
             #df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' ")
-            df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' ") 
+            df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ") 
             df_new1 = df_new1.fetchall()
 
        else:
-           df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%5' or article_id like '%6' or article_id like '%7' or article_id like '%8' or article_id like '%9' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' ")
+           df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%5' or article_id like '%6' or article_id like '%7' or article_id like '%8' or article_id like '%9' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ")
            df_new1 = df_new1.fetchall()
 
        #st.subheader(df_new1[0][0], divider='rainbow')
-       df_count = cursor.execute("SELECT COUNT(*) from TD_vistec_chk WHERE Actor_wang = {} and Date_actor_wang IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
+       df_count = cursor.execute("SELECT COUNT(*) from TD_vistec_chk WHERE Actor_final_vistec = {} and Date_actor_wang IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
        df_count = df_count.fetchall() 
        st.subheader(df_new1[0][0]  + " ( Done: " + str(df_count[0][0]) + " )", divider='rainbow')
     #    st.subheader("Type:")
@@ -329,7 +329,7 @@ def app():
                                 # Construct the SQL UPDATE statement
                                 update_query = """
                                     UPDATE TD_vistec_chk
-                                    SET instruction_wang = ?, input_wang = ?, output_wang = ?, review_wang = ?, comment_wang = ?, Actor_wang = ?, Date_actor_wang = ?
+                                    SET instruction_wang = ?, input_wang = ?, output_wang = ?, review_final_vistec = ?, comment_final_vistec = ?, Actor_final_vistec = ?, Date_actor_final_vistec = ?
                                     WHERE article_id = ?
                                 """
 
