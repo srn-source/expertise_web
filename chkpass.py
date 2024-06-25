@@ -270,10 +270,12 @@ def app():
        #print("erererrrrrrrrrr")
        #df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec IS NOT NULL and  comment_vistec != '' ORDER BY NEWID()")
        if "ADMIN2" in st.session_state['userName'].upper():
-            df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Date_actor_wang < '2024-06-24'")
+            #df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' ")
+            df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' ") 
             df_new1 = df_new1.fetchall()
+
        else:
-           df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%5' or article_id like '%6' or article_id like '%7' or article_id like '%8' or article_id like '%9' ) and Date_actor_wang < '2024-06-24'")
+           df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%5' or article_id like '%6' or article_id like '%7' or article_id like '%8' or article_id like '%9' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' ")
            df_new1 = df_new1.fetchall()
 
        #st.subheader(df_new1[0][0], divider='rainbow')
@@ -293,8 +295,8 @@ def app():
 
        with st.form(key="vendor_form1" , clear_on_submit=True):
                 inst1 = st.text_area(label="Instruction:", height= 50, value=df_new1[0][5])
-                input1 = st.text_area(label="Input:", height= 200, value=df_new1[0][6])
-                outpu = st.text_area(label="Output:", height= 400, value=df_new1[0][7])
+                input1 = st.text_area(label="Input:", height= 400, value=df_new1[0][6])
+                outpu = st.text_area(label="Output:", height= 600, value=df_new1[0][7])
 
                 review_status = st.selectbox("Review Status", options=REVIEWSTATUS_WANG)
                 comment_name = st.text_area(label="Comment", height= 200, value="")
@@ -343,7 +345,7 @@ def app():
     #    comment_name2 = st.text_area(label="Input:", height= 200, value=df_new1[0][6])
     #    comment_name3 = st.text_area(label="Output:", height= 400, value=df_new1[0][7])
 
-    if "ADMIN11" in st.session_state['userName'].upper() or "ADMIN12" in st.session_state['userName'].upper() or "ADMIN13" in st.session_state['userName'].upper() or "ADMIN14" in st.session_state['userName'].upper() or "ADMIN15" in st.session_state['userName'].upper():
+    if "ADMIN11" in st.session_state['userName'].upper() or "ADMIN12" in st.session_state['userName'].upper() or "ADMIN13" in st.session_state['userName'].upper() or "ADMIN14" in st.session_state['userName'].upper() or "ADMIN15" in st.session_state['userName'].upper() or "ADMIN16" in st.session_state['userName'].upper() or "ADMIN17" in st.session_state['userName'].upper():
        if "ADMIN11" in st.session_state['userName'].upper():
             df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%0') and (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') ")
             df_new1 = df_new1.fetchall()
@@ -354,6 +356,12 @@ def app():
             df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%4' or article_id like '%5' or article_id like '%6' or article_id like '%1' ) and (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') ")
             df_new1 = df_new1.fetchall()
        elif "ADMIN14" in st.session_state['userName'].upper():
+            df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%1') and (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') ")
+            df_new1 = df_new1.fetchall()
+       elif "ADMIN15" in st.session_state['userName'].upper():
+            df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%6') and (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') ")
+            df_new1 = df_new1.fetchall()
+       elif "ADMIN16" in st.session_state['userName'].upper():
             df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%7') and (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') ")
             df_new1 = df_new1.fetchall()
        else:
@@ -429,7 +437,7 @@ def app():
 
 
     
-    if len(df_new)  == 1 and ( "ADMIN2" not in st.session_state['userName'].upper() and "ADMIN6" not in st.session_state['userName'].upper() and "ADMIN10" not in st.session_state['userName'].upper() and "ADMIN11" not in st.session_state['userName'].upper() and "ADMIN12" not in st.session_state['userName'].upper() and "ADMIN13" not in st.session_state['userName'].upper() and "ADMIN14" not in st.session_state['userName'].upper() and "ADMIN15" not in st.session_state['userName'].upper()):
+    if len(df_new)  == 1 and ( "ADMIN2" not in st.session_state['userName'].upper() and "ADMIN6" not in st.session_state['userName'].upper() and "ADMIN10" not in st.session_state['userName'].upper() and "ADMIN11" not in st.session_state['userName'].upper() and "ADMIN12" not in st.session_state['userName'].upper() and "ADMIN13" not in st.session_state['userName'].upper() and "ADMIN14" not in st.session_state['userName'].upper() and "ADMIN15" not in st.session_state['userName'].upper() and "ADMIN16" not in st.session_state['userName'].upper() and "ADMIN17" not in st.session_state['userName'].upper()):
 
        st.subheader(df_new[0][1]  + " ( Done: " + str(df_count[0][0]) + " )", divider='rainbow')
        st.subheader("Type:")
