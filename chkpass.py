@@ -279,7 +279,7 @@ def app():
             df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ") 
             df_new1 = df_new1.fetchall()
 
-            # df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ORDER BY NEWID()") 
+            # df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE article_id in (SELECT id_keys FROM View_insert_chosen_reject where actor = 'USER9') and Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL  ") 
             # df_new1 = df_new1.fetchall()
 
        else:
