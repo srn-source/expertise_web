@@ -254,7 +254,7 @@ def app():
     elif "ADMIN7" in st.session_state['userName'].upper(): 
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%3')")
         df_new = df_new.fetchall()
-    else:
+    elif "ADMIN1" in st.session_state['userName'].upper() or "ADMIN" in st.session_state['userName'].upper(): 
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%0' or article_id like '%1' or article_id like '%4' or article_id like '%5')")
         df_new = df_new.fetchall()
 
@@ -263,16 +263,18 @@ def app():
      "PASS",
      "NOT PASS"
     ]
-    df_count = cursor.execute("SELECT COUNT(*) from View_vistec_check WHERE Actor_vistec = {}  and vistec_chk IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
-    df_count = df_count.fetchall() 
+    # df_count = cursor.execute("SELECT COUNT(*) from View_vistec_check WHERE Actor_vistec = {}  and vistec_chk IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
+    # df_count = df_count.fetchall() 
     #print(st.session_state['userName'].upper())
     if "ADMIN2" in st.session_state['userName'].upper() or "ADMIN6" in st.session_state['userName'].upper():
        #print("erererrrrrrrrrr")
        #df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec IS NOT NULL and  comment_vistec != '' ORDER BY NEWID()")
        if "ADMIN2" in st.session_state['userName'].upper():
-            #df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' ")
             df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ") 
             df_new1 = df_new1.fetchall()
+
+            # df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ORDER BY NEWID()") 
+            # df_new1 = df_new1.fetchall()
 
        else:
            df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%5' or article_id like '%6' or article_id like '%7' or article_id like '%8' or article_id like '%9' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ")
@@ -439,6 +441,9 @@ def app():
     
     if len(df_new)  == 1 and ( "ADMIN2" not in st.session_state['userName'].upper() and "ADMIN6" not in st.session_state['userName'].upper() and "ADMIN10" not in st.session_state['userName'].upper() and "ADMIN11" not in st.session_state['userName'].upper() and "ADMIN12" not in st.session_state['userName'].upper() and "ADMIN13" not in st.session_state['userName'].upper() and "ADMIN14" not in st.session_state['userName'].upper() and "ADMIN15" not in st.session_state['userName'].upper() and "ADMIN16" not in st.session_state['userName'].upper() and "ADMIN17" not in st.session_state['userName'].upper()):
 
+       df_count = cursor.execute("SELECT COUNT(*) from View_vistec_check WHERE Actor_vistec = {}  and vistec_chk IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
+       df_count = df_count.fetchall() 
+       
        st.subheader(df_new[0][1]  + " ( Done: " + str(df_count[0][0]) + " )", divider='rainbow')
        st.subheader("Type:")
        st.markdown(df_new[0][3])
