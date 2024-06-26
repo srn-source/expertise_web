@@ -114,6 +114,12 @@ TAGS_LEGAL = [
 "98.กฎหมายชุมนุม"
 ]
 
+TAGS_reason = [
+ "จัด format ไม่ดี",
+ "ไม่มีการแนบ บทความหรือข้อมูล ที่กล่าวถึง",
+ "มีการเกริ่นนําหรือมี เนื้อหาที่เหมือน Copy มาจาก บทความ",
+ "มีภาษาอื่นแทรกมา หรือเขียนไม่ถูกต้อง",
+]
 
 # TAGS_FINANCE = [
 # "1.สถาบันการเงิน",
@@ -270,11 +276,11 @@ def app():
        #print("erererrrrrrrrrr")
        #df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec IS NOT NULL and  comment_vistec != '' ORDER BY NEWID()")
        if "ADMIN2" in st.session_state['userName'].upper():
-            df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ") 
-            df_new1 = df_new1.fetchall()
-
-            # df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ORDER BY NEWID()") 
+            # df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ") 
             # df_new1 = df_new1.fetchall()
+
+            df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ORDER BY NEWID()") 
+            df_new1 = df_new1.fetchall()
 
        else:
            df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%5' or article_id like '%6' or article_id like '%7' or article_id like '%8' or article_id like '%9' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ")
@@ -458,24 +464,32 @@ def app():
 
        with st.form(key="vendor_form1" , clear_on_submit=True):
            review_status = st.selectbox("Review Status", options=REVIEWSTATUS)
+           comment_tag = st.multiselect("Reason If NOT PASS", options=TAGS_reason ) 
            comment_name = st.text_area(label="Comment", height= 200, value="")
            submit_button = st.form_submit_button(label="Submit Details")
+           
+
 
            can_save = 1
            if submit_button:
+                
+
                 if review_status == "" :
                     can_save == 0
                     st.warning("please choose Review Status.")
                     st.stop()
                 elif review_status == "NOT PASS" :
-                    if  comment_name == "":
+                    if  comment_name == "" and len(comment_tag) == 0:
                         can_save == 0
                         st.warning("please fill a reason why NOT PASS.")
                         st.stop()
                     
                 if can_save == 1:
                     try:
-                        row2 = (df_new[0][1],review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                        comment_tag = ", ".join(comment_tag)
+                        new_ment = comment_tag +  ", " +comment_name
+
+                        row2 = (df_new[0][1],review_status,new_ment,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
                         print("row2 ==>", row2)
 
                         cursor.execute("INSERT INTO TD_vistec_chk(article_id, review_status, comment, Actor, Date_actor ) VALUES (?,?,?,?,?)", row2)
