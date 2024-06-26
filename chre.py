@@ -260,7 +260,7 @@ def app():
             
             
             print("=======================================") #ORDER BY NEWID()
-            df_new = cursor.execute("SELECT TOP 1 *  from View_insert_chosen_reject WHERE actor = {} and (id_keys like 'Finance%' or id_keys like 'Legal%' or id_keys like 'Medical%') and date_actor IS NULL  and id_keys in (SELECT article_id FROM [dbo].[TD_vistec_chk] where comment = '' or ( review_wang = 'แก้ไขแล้ว' and ( Actor_wang = 'admin2' or Actor_wang = 'admin6' ))) ORDER BY NEWID();".format("'"+st.session_state['userName']+ "'"))
+            df_new = cursor.execute("SELECT TOP 1 *  from View_insert_chosen_reject WHERE actor = {} and (id_keys like 'Finance%' or id_keys like 'Legal%' or id_keys like 'Medical%') and date_actor IS NULL  and id_keys in (SELECT article_id FROM [dbo].[TD_vistec_chk] where comment = '' or ( review_wang = 'แก้ไขแล้ว' and ( Actor_wang = 'admin2' or Actor_wang = 'admin6' ))) ;".format("'"+st.session_state['userName']+ "'"))
             df_new = df_new.fetchall()
             #print(df_new)
 
