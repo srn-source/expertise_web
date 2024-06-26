@@ -254,14 +254,14 @@ def app():
     elif "ADMIN4" in st.session_state['userName'].upper(): 
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%6' or article_id like '%7')")
         df_new = df_new.fetchall()
-    elif "ADMIN5" in st.session_state['userName'].upper(): 
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%2')")
-        df_new = df_new.fetchall()
-    elif "ADMIN7" in st.session_state['userName'].upper(): 
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%3')")
-        df_new = df_new.fetchall()
+    # elif "ADMIN5" in st.session_state['userName'].upper(): 
+    #     df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%2')")
+    #     df_new = df_new.fetchall()
+    # elif "ADMIN7" in st.session_state['userName'].upper(): 
+    #     df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%3')")
+    #     df_new = df_new.fetchall()
     elif "ADMIN1" in st.session_state['userName'].upper() or "ADMIN" in st.session_state['userName'].upper(): 
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%0' or article_id like '%1' or article_id like '%4' or article_id like '%5')")
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%0' or article_id like '%1' or article_id like '%4' or article_id like '%5' or article_id like '%3' or article_id like '%2')")
         df_new = df_new.fetchall()
 
     REVIEWSTATUS =[
@@ -276,11 +276,11 @@ def app():
        #print("erererrrrrrrrrr")
        #df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec IS NOT NULL and  comment_vistec != '' ORDER BY NEWID()")
        if "ADMIN2" in st.session_state['userName'].upper():
-            # df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ") 
-            # df_new1 = df_new1.fetchall()
-
-            df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ORDER BY NEWID()") 
+            df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%0' or article_id like '%1' or article_id like '%2' or article_id like '%3' or article_id like '%4' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ") 
             df_new1 = df_new1.fetchall()
+
+            # df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ORDER BY NEWID()") 
+            # df_new1 = df_new1.fetchall()
 
        else:
            df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and (article_id like '%5' or article_id like '%6' or article_id like '%7' or article_id like '%8' or article_id like '%9' ) and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL ")
@@ -488,6 +488,8 @@ def app():
                     try:
                         comment_tag = ", ".join(comment_tag)
                         new_ment = comment_tag +  ", " +comment_name
+                        if new_ment == ", ":
+                            new_ment = ""
 
                         row2 = (df_new[0][1],review_status,new_ment,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
                         print("row2 ==>", row2)
