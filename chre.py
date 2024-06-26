@@ -260,11 +260,11 @@ def app():
             
             
             print("=======================================") #ORDER BY NEWID()
-            df_new = cursor.execute("SELECT TOP 1 * from View_insert_chosen_reject WHERE actor = {} and (id_keys like 'Finance%' or id_keys like 'Legal%' or id_keys like 'Medical%') and date_actor IS NULL ;".format("'"+st.session_state['userName']+ "'"))
+            df_new = cursor.execute("SELECT TOP 1 *  from View_insert_chosen_reject WHERE actor = {} and (id_keys like 'Finance%' or id_keys like 'Legal%' or id_keys like 'Medical%') and date_actor IS NULL  and id_keys in (SELECT article_id FROM [dbo].[TD_vistec_chk] where comment = '' or ( review_wang = 'แก้ไขแล้ว' and ( Actor_wang = 'admin2' or Actor_wang = 'admin6' ))) ORDER BY NEWID();".format("'"+st.session_state['userName']+ "'"))
             df_new = df_new.fetchall()
             #print(df_new)
 
-            if len(df_new)  == 0 :
+            if len(df_new)  == 1 :
                 
                 df_count = cursor.execute("SELECT COUNT(*) from View_insert_chosen_reject WHERE actor = {} and status_review = '' and date_actor IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
                 df_count = df_count.fetchall()
@@ -278,15 +278,24 @@ def app():
                         st.markdown(df_new[0][5])
                     if "Open" in df_new[0][7] or "Classification" in df_new[0][7] or "Creative" in df_new[0][7] or "choice" in df_new[0][7] or "Brainstorming" in df_new[0][7]:
                         st.markdown("Hint: "+df_new[0][6])
-
-                    st.subheader("Type: "+ df_new[0][7])
-
-                    st.subheader("Instruction:")
-                    st.markdown(df_new[0][9])
-                    st.subheader("Context or Article:")
-                    st.markdown(df_new[0][10])
-                    st.subheader("Answer:")
-                    st.markdown(df_new[0][11])
+                    
+                    print("df_new[0][13]", df_new[0][13])
+                    if df_new[0][13] != None:
+                        st.subheader("Type: "+ df_new[0][7])
+                        st.subheader("Instruction:")
+                        st.markdown(df_new[0][13])
+                        st.subheader("Context or Article:")
+                        st.markdown(df_new[0][14])
+                        st.subheader("Answer:")
+                        st.markdown(df_new[0][15])
+                    else:
+                        st.subheader("Type: "+ df_new[0][7])
+                        st.subheader("Instruction:")
+                        st.markdown(df_new[0][9])
+                        st.subheader("Context or Article:")
+                        st.markdown(df_new[0][10])
+                        st.subheader("Answer:")
+                        st.markdown(df_new[0][11])
                 else:
                     st.subheader("Instruction:")
                     st.markdown(df_new[0][2])
@@ -309,7 +318,7 @@ def app():
                 #years_in_business = st.slider("Years in Business", 0, 50, 5)
                 #onboarding_date = st.date_input(label="Onboarding Date" )
                 review_status = st.selectbox("Review Status", options=REVIEWSTATUS)
-                multi = '''Importance\n1. บางข้อที่มีคำถาม refer ถึงบทความ แต่ไม่มี บทความอยู่ในช่อง Context or Article ให้สามารถ skip และใส่เหตุผล
+                multi = '''Importance\n1. บางข้อที่มีคำถาม refer ถึงบทความ แต่ไม่มี บทความอยู่ในช่อง Context or Article ให้สามารถ skip และใส่เหตุผล\n2. กรุณาจัด format ให้อ่านง่ายๆ เพื่อคนตรวจจะได้เช็ค Quality ได้ ถ้าหาก format อ่ายยากหรือไม่ consistency เราจะ Reject ข้อความนั้น ถือว่า quality ไม่ผ่าน
                 '''
                 st.markdown(multi)
             
