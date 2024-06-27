@@ -252,11 +252,11 @@ def app():
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%9' or article_id like '%8')")
         df_new = df_new.fetchall()
     elif "ADMIN4" in st.session_state['userName'].upper(): 
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%6' or article_id like '%7')")
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%7')")
         df_new = df_new.fetchall()
-    # elif "ADMIN5" in st.session_state['userName'].upper(): 
-    #     df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%2')")
-    #     df_new = df_new.fetchall()
+    elif "ADMIN5" in st.session_state['userName'].upper(): 
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%6')")
+        df_new = df_new.fetchall()
     # elif "ADMIN7" in st.session_state['userName'].upper(): 
     #     df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%3')")
     #     df_new = df_new.fetchall()
@@ -280,6 +280,9 @@ def app():
             df_new1 = df_new1.fetchall()
 
             # df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE article_id in (SELECT id_keys FROM View_insert_chosen_reject where actor = 'USER9') and Actor_wang  IS NOT NULL and review_wang = 'แก้ไขแล้ว' and Actor_wang != 'admin2' and Actor_wang != 'admin6' and Actor_final_vistec IS NULL  ") 
+            # df_new1 = df_new1.fetchall()
+
+            # df_new1 = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE article_id  = 'Finance_40743'  ") 
             # df_new1 = df_new1.fetchall()
 
        else:
