@@ -268,7 +268,16 @@ def app():
                 
                 df_count = cursor.execute("SELECT COUNT(*) from View_insert_chosen_reject WHERE actor = {} and status_review = '' and date_actor IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
                 df_count = df_count.fetchall()
-                st.subheader( "ID: " + df_new[0][0] + " (Done: " + str(df_count[0][0]) + ")", divider='rainbow')
+
+                df_count_week = cursor.execute("SELECT COUNT(*) from View_insert_chosen_reject WHERE actor = {} and status_review = '' and date_actor IS NOT NULL and date_actor BETWEEN DATEADD(DAY, -7, GETDATE()) AND DATEADD(DAY, 1, GETDATE());".format("'"+st.session_state['userName']+ "'"))
+                df_count_week = df_count_week.fetchall()
+                #print("df_count_week ", df_count_week)
+                if df_count_week[0][0] > 140:
+                    st.error("Over limit of This week")
+                    st.stop()
+
+
+                st.subheader( "ID: " + df_new[0][0] + " (Done: " + str(df_count[0][0]) + " Week: " + str(df_count_week[0][0]) +")", divider='rainbow')
 
                 #st.subheader( "ID: " + df_new[0][0], divider='rainbow')
 
