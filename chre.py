@@ -263,6 +263,11 @@ def app():
             #df_new = cursor.execute("SELECT TOP 1 *  from View_insert_chosen_reject WHERE actor = {} and (id_keys like 'Finance%' or id_keys like 'Legal%' or id_keys like 'Medical%') and date_actor IS NULL  and id_keys in (SELECT article_id FROM [dbo].[TD_vistec_chk] where comment = '' or ( review_wang = 'แก้ไขแล้ว' and ( Actor_wang = 'admin2' or Actor_wang = 'admin6')) or review_final_vistec = 'แก้ไขแล้ว') ;".format("'"+st.session_state['userName']+ "'"))
             df_new = cursor.execute("SELECT TOP 1 *  from View_insert_chosen_reject WHERE actor = {} and (id_keys like 'Finance%' or id_keys like 'Legal%' or id_keys like 'Medical%') and date_actor IS NULL ;".format("'"+st.session_state['userName']+ "'"))
             df_new = df_new.fetchall()
+            print(len(df_new))
+
+            if len(df_new) == 0:
+                df_new = cursor.execute("SELECT TOP 1 *  from View_insert_chosen_reject WHERE actor = {} and date_actor IS NULL ;".format("'"+st.session_state['userName']+ "'"))
+                df_new = df_new.fetchall()
 
             if len(df_new)  == 1 :
                 
