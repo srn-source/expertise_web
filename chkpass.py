@@ -120,8 +120,10 @@ TAGS_reason = [
  "มีการเกริ่นนําหรือมี เนื้อหาที่เหมือน Copy มาจาก บทความ",
  "มีภาษาอื่นแทรกมา, เขียนไม่ถูกต้อง หรือ มีลิ้งปนมา",
  "รายละเอียดเยอะไป โจทย์ถามอะไร ให้ตอบแค่นั้น",
- "Enter เยอะเกินไป พารากราฟเดียวกันห้ามใส่ enter หรือ ควรแบ่งเป็นข้อๆให้ชัดเจน ใส่ขีด หรือ ตัวเลข",
- "งง คำถาม คำตอบว่า ถามอะไร ตอบอะไร"
+ "ขึ้นบรรทัดใหม่ เยอะเกินไป พารากราฟเดียวกันห้ามขึ้นบรรทัดใหม่ หรือ ควรแบ่งเป็นข้อๆให้ชัดเจน ใส่ขีด หรือ ตัวเลข",
+ "งง คำถาม คำตอบว่า ถามอะไร ตอบอะไร",
+ "ข้อความมันติดกันยาว ไม่มีย่อหน้าเว้นวรรคให้หายเหนื่อยบ้างเลย ตอนอ่าน",
+ "ควร ขึ้นบรรทัดใหม่ แยกสัดส่วนกันในแต่หัวข้อ ตอนนี้มันไปติดข้อก่อนหน้า"
 ]
 
 # TAGS_FINANCE = [
@@ -252,10 +254,10 @@ def app():
     #df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL ")
     #and article_id like '%9'
     if "ADMIN3" in st.session_state['userName'].upper(): 
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%9' or article_id like '%8' )")
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%9' or article_id like '%8' )")
         df_new = df_new.fetchall()
     elif "ADMIN4" in st.session_state['userName'].upper(): 
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%7' or article_id like '%6' )")
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%7' or article_id like '%6' )")
         df_new = df_new.fetchall()
     # elif "ADMIN5" in st.session_state['userName'].upper(): 
     #     df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%6')")
@@ -264,10 +266,13 @@ def app():
     #     df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%3')")
     #     df_new = df_new.fetchall()
     elif "ADMIN1" in st.session_state['userName'].upper(): 
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%0' or article_id like '%1' or article_id like '%4' or article_id like '%5' )")
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%0' or article_id like '%4' or article_id like '%5' )")
         df_new = df_new.fetchall()
-    elif "ADMIN" in st.session_state['userName'].upper(): 
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%3' or article_id like '%2' )")
+    elif "ADMIN5" in st.session_state['userName'].upper(): 
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%1' )")
+        df_new = df_new.fetchall()
+    elif "ADMIN" == st.session_state['userName'].upper(): 
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%3' or article_id like '%2' )")
         df_new = df_new.fetchall()
     
 
