@@ -276,8 +276,8 @@ def app():
                         actor = dom + str(6)
                 
 
-                #q= ""
-                q = "_fix1"
+                q= ""
+                #q = "_fix1"
 
                 row1 = (row["keys"] + q,row["type"],row["title"],row["texts"],row["url"],row["type_new"])
                 cursor.execute('INSERT INTO TM_articles(article_id ,type_domain,  title_name, contents, url , task_type) VALUES (?,?,?,?,?,?)', row1)
@@ -302,8 +302,73 @@ def app():
             else:
                 if st.session_state['loggedIn']:
                     show_logout_page() 
-                    #print("You already logged in")   
-                    #show_main_page()
+
+
+                    # df_new1 = cursor.execute("SELECT  a.article_id,a.instruction_wang ,a.input_wang ,a.output_wang ,b.task_type ,b.Instruction ,b.Input ,b.Output ,c.domain_tags ,c.thai_specific FROM TD_vistec_chk as a LEFT OUTER JOIN View_vistec_check as b on a.article_id = b.article_id LEFT OUTER JOIN TD_insert as c on a.article_id = c.article_id where a.review_wang = 'แก้ไขแล้ว'  or a.review_final_vistec = 'แก้ไขแล้ว' or a.comment = ''")
+                    # df_new1 = df_new1.fetchall()
+
+                    # article_id1 = []
+                    # inst1 = []
+                    # inpu1 = []
+                    # outpu1 = []
+                    # task_type1 = []
+                    # licen1 = []
+                    # domain1 = []
+                    # tags1 = []
+                    # thai1 = []
+
+                    # for jj in df_new1:
+                    #     article_id = jj[0].replace("_fix1" , "")
+                    #     dom = jj[0].replace("_fix1" , "").split("_")[0]
+
+                    #     if jj[1] is not None:
+                    #         instruction = jj[1]
+                    #         inpu = '' if jj[2] is None else jj[2]
+                    #         outpu = jj[3]
+                    #     else:
+                    #         instruction = jj[5]
+                    #         inpu = '' if jj[6] is None else jj[6]
+                    #         outpu = jj[7]
+
+                    #     task_type = jj[4]
+                    #     all_tag = []
+                    #     for h in jj[8].split(","):
+                    #         all_tag.append(h.split(".")[1])
+
+                    #     tag = ','.join(all_tag)
+                    #     is_thai = jj[9]
+                    #     licen = 'cc-by-sa-4.0'
+
+                    #     article_id1.append(article_id)
+                    #     domain1.append(dom)
+                    #     inst1.append(instruction)
+                    #     inpu1.append(inpu)
+                    #     outpu1.append(outpu)
+                    #     task_type1.append(task_type)
+                    #     licen1.append(licen)
+                    #     tags1.append(tag)
+                    #     thai1.append(is_thai)
+                    # df_all_insert_v1 = pd.DataFrame(list(zip(article_id1 ,domain1, inst1 , inpu1, outpu1,thai1 ,tags1, task_type1 , licen1 )) ,columns=['ID','Domain' ,'Instruction', 'Input', 'Output' ,'Thai_Specfic','Tags', 'Task_type' , 'License'])
+                    # df_all_insert_v1.to_csv(f"D:\expertise_web\instru_batch1.csv" , encoding="utf-8")
+
+
+
+
+
+                    # import pandas as pd
+                    # df = pd.read_csv(r'D:\expertise_web\data_original\inst_not_ref_article_FIX(1).csv')
+                    # print(len(df))
+                    # article_ids = df['article_id'].tolist()
+                    # print(article_ids)
+
+                    # co = 0
+                    # for g in article_ids:
+                    #     df_new = cursor.execute("SELECT TOP 1 * from TD_vistec_chk WHERE comment !='' and article_id = {} ".format("'"+g+"'"))
+                    #     df_new = df_new.fetchall()
+                    #     if len(df_new)  == 1 :
+                    #         co =co +1
+                    #print(co)
+
 
                     #import pandas as pd
                     #from urllib.parse import urlsplit
@@ -382,20 +447,20 @@ def app():
                     # print(df1.head(3))
                     # save_info(df1, 5, 'Retail')
 
-                    # df2 = pd.read_csv(r'D:\expertise_web\data_original\Medical1_fix.csv')
-                    # df2 = df2.fillna('')
-                    # print(df2.head(3))
-                    # save_info(df2, 6, 'Medical')
+                    #df2 = pd.read_csv(r'D:\expertise_web\data_original\Medical10.csv')
+                    #df2 = df2.fillna('')
+                    #print(df2.head(3))
+                    #save_info(df2, 6, 'Medical')
 
-                    # df3 = pd.read_csv(r'D:\expertise_web\data_original\Legal1_fix.csv')
-                    # df3 = df3.fillna('')
-                    # print(df3.head(2))
-                    # save_info(df3, 5, 'Legal')
+                    #df3 = pd.read_csv(r'D:\expertise_web\data_original\Legal10.csv')
+                    #df3 = df3.fillna('')
+                    #print(df3.head(2))
+                    #save_info(df3, 5, 'Legal')
 
-                    # df4 = pd.read_csv(r'D:\expertise_web\data_original\Finance1_fix.csv') #read_excel
-                    # df4 = df4.fillna('')
-                    # print(df4.head(2))
-                    # save_info(df4, 5, 'Finance')
+                    #df4 = pd.read_csv(r'D:\expertise_web\data_original\Finance10.csv') #read_excel
+                    #df4 = df4.fillna('')
+                    #print(df4.head(2))
+                    #save_info(df4, 5, 'Finance')
 
                     # try:
                     #     for index, row in df1.iterrows():
@@ -479,14 +544,6 @@ def app():
                     # merge_table = pd.merge(merge_table1, df_all_info_v1,  left_on=['keys'], right_on=['article_id_info'] , how="left" )
                     # print("merge_table : " ,len(merge_table))
                     # merge_table.to_csv(f"D:\expertise_web\data_original\merge_table_v5.csv" , encoding="utf-8")
-
-
-
-
-
-
-
-
 
 
 

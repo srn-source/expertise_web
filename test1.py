@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-import home , main , anno ,yoursuccess , chre, chkpass #, trending, test, your, about
+import home , main , anno ,yoursuccess , chre, chkpass, wang #, trending, test, your, about
 st.set_page_config(
         page_title="Instruction Dataset",
 )
@@ -22,8 +22,8 @@ class MultiApp:
         with st.sidebar:        
             app = option_menu(
                 menu_title='Instruction ',
-                options=['Home','Main', 'Chosen & Reject','Annotation','Your success' , 'Check Pass'],
-                icons=['house-fill','person-circle','trophy-fill','chat-fill','info-circle-fill','info-circle-fill'],
+                options=['Home','Main', 'Chosen & Reject','Annotation','Your success' , 'Check Pass', 'Wang'],
+                icons=['house-fill','person-circle','trophy-fill','chat-fill','info-circle-fill','info-circle-fill','chat-fill'],
                 menu_icon='chat-text-fill',
                 default_index=1,
                 styles={
@@ -107,6 +107,8 @@ class MultiApp:
             yoursuccess.app()
         if app == 'Check Pass':
             chkpass.app()
+        if app == 'Wang':
+            wang.app()
             
              
           
