@@ -62,7 +62,7 @@ def app():
     st.subheader("Waiting Wang Check: " + str(df_count[0][0]))
     st.subheader("Total Pass: " + str(df_count_pass[0][0]))
 
-    for i in range(0,8):
+    for i in range(0,10):
         jj = 'admin' + str(i)
         if i == 0:
             jj = 'admin' 

@@ -33,7 +33,7 @@ def reconnect():
 
 def app():
     #print("====> ",st.session_state)
-    if st.session_state['loggedIn'] == False or (st.session_state['userName'].upper() != 'ADMIN18' and st.session_state['userName'].upper() != 'ADMIN19'):
+    if st.session_state['loggedIn'] == False or (st.session_state['userName'].upper() != 'ADMIN18' and st.session_state['userName'].upper() != 'ADMIN19' and st.session_state['userName'].upper() != 'ADMIN'):
         st.error("Please login")
         st.stop()
     st.session_state['ids'] = []
