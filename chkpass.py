@@ -251,6 +251,7 @@ def app():
         else:
             break
     
+    df_new = []
     #df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE (url like '%www.longtunman.com%' or url like '%www.finnomena.com%' or url like '%khemmapat.org%' or url like '%www.lawsiam.com%' or url like '%srisunglaw.com%' or url like '%www.thanulegal.com%' or url like '%www.nstda.or.th%' or url like '%www.petcharavejhospital.com%') and review_status = 'PASS' and vistec_chk IS NULL ")
     #and article_id like '%9'
     if "ADMIN3" in st.session_state['userName'].upper(): 
@@ -285,7 +286,23 @@ def app():
     # df_count = cursor.execute("SELECT COUNT(*) from View_vistec_check WHERE Actor_vistec = {}  and vistec_chk IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
     # df_count = df_count.fetchall() 
     #print(st.session_state['userName'].upper())
-    if "ADMIN2" in st.session_state['userName'].upper() or "ADMIN6" in st.session_state['userName'].upper():
+
+
+    if "ADMIN6" in st.session_state['userName'].upper():
+       df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  review_status = 'PASS' and vistec_chk IS NOT NULL and status_vistec = 'PASS' and vistec_chk > DATEADD(DAY, 1, DATEADD(DAY, 1-DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS DATE)))   and  vistec_chk < DATEADD(DAY, 2, DATEADD(DAY, 7-DATEPART(WEEKDAY, GETDATE()), CAST(GETDATE() AS DATE))) ORDER BY NEWID()")
+       df_new1 = df_new1.fetchall()
+
+       st.subheader(df_new1[0][1] + "  (Actor: " +  df_new1[0][16] + " )", divider='rainbow')
+       st.subheader("Instruction:")
+       st.markdown(df_new1[0][4].replace('\n', '<br>'), unsafe_allow_html=True)
+       st.subheader("Input:")
+       st.markdown(df_new1[0][5].replace('\n', '<br>'), unsafe_allow_html=True)
+       st.subheader("Output:")
+       st.markdown(df_new1[0][6].replace('\n', '<br>'), unsafe_allow_html=True )
+       st.subheader("Comment:")
+       st.markdown(df_new1[0][18])
+
+    if "ADMIN2" in st.session_state['userName'].upper():
        #print("erererrrrrrrrrr")
        #df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE status_vistec IS NOT NULL and  comment_vistec != '' ORDER BY NEWID()")
        if "ADMIN2" in st.session_state['userName'].upper():
