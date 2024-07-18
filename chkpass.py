@@ -258,7 +258,7 @@ def app():
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%7' or article_id like '%4')")
         df_new = df_new.fetchall()
     elif "ADMIN4" in st.session_state['userName'].upper(): 
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%2' or article_id like '%3' )")
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%1' or article_id like '%3' )")
         df_new = df_new.fetchall()
     elif "ADMIN9" in st.session_state['userName'].upper(): 
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and  review_status = 'PASS' and vistec_chk IS NULL and  article_id like '%5' )")
@@ -270,10 +270,10 @@ def app():
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%6' )")
         df_new = df_new.fetchall()
     elif "ADMIN5" in st.session_state['userName'].upper(): 
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%9' )")
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%2' )")
         df_new = df_new.fetchall()
     elif "ADMIN" == st.session_state['userName'].upper(): 
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%1' )")
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE type_domain = 'Medical' and  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%9' )")
         df_new = df_new.fetchall()
     
 
