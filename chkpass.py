@@ -394,12 +394,14 @@ def app():
         user = user.fetchall() 
         print(user)
         if len(user) > 0:
-                B_list = [ 'article_id like ' +f"'%{item.strip()}'" for item in user[0][0].split(',')]
+                #B_list = [ 'article_id like ' +f"'%{item.strip()}'" for item in user[0][0].split(',')]
+                B_list = [ 'article_id like ' + (f"'%{item.strip()}%'" if item.strip() == "fix" else f"'%{item.strip()}'") for item in user[0][0].split(',') ]
                 y1 = "("
                 for hhh in B_list:
                     y1 =y1 + hhh + " or "
 
                 y1 = y1[:-3] + ")"
+                #print(y1)
                 df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and {} ".format(y1))
                 df_new1 = df_new1.fetchall() 
     #    if "ADMIN11" in st.session_state['userName'].upper():

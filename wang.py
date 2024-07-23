@@ -62,26 +62,36 @@ def app():
     st.subheader("Finished Jobs: " + str(df_count_finish[0][0]))
     st.subheader("Cannot edit: " + str(df_count_cannot[0][0]))
     #st.subheader("", divider='rainbow')
+    yu = 0
+    lll = 0
     for i in range(11,21):
         jj = 'admin' + str(i)
         st.subheader(jj, divider='rainbow')
         user = cursor.execute("SELECT jobs from TM_related_job WHERE username = {} ;".format("'"+jj+ "'"))
         user = user.fetchall() 
-        #print(len(user))
+        print(len(user))
+        
         if len(user) > 0:
             #print(user[0][0])
-            B_list = [ 'article_id like ' +f"'%{item.strip()}'" for item in user[0][0].split(',')]
+            #B_list = [ 'article_id like ' +f"'%{item.strip()}'" for item in user[0][0].split(',')]
+            B_list = [
+                'article_id like ' + (f"'%{item.strip()}%'" if item.strip() == "fix" else f"'%{item.strip()}'")
+                for item in user[0][0].split(',')
+            ]
+            lll = lll + len(B_list)
             #print(B_list)
             y1 = "("
             for hhh in B_list:
                 y1 =y1 + hhh + " or "
 
             y1 = y1[:-3] + ")"
-            #print(y1)
+            #print("=====\n" ,y1)
 
             waitt = cursor.execute("SELECT COUNT(*) from TD_vistec_chk WHERE comment != '' and Date_actor_wang IS NULL and {};".format(y1))
             waitt = waitt.fetchall() 
-            #print(waitt[0][0])
+            yu = yu + waitt[0][0]
+            # print(yu)
+            # print(lll)
             st.markdown("waiting " + jj +' ===> '+ str(waitt[0][0]))
             st.markdown("jobs " + jj +' ===> '+ str(user[0][0]))
     
