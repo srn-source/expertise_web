@@ -4,7 +4,7 @@ import home
 import pyodbc
 import pandas as pd
 # from ollama import Client
-
+from urllib.parse import urlsplit
 #cnxn = pyodbc.connect(
 #                "DRIVER={ODBC Driver 17 for SQL Server};encrypt=no;SERVER="
 #                + st.secrets["server"]
@@ -228,6 +228,23 @@ def app():
 
         except Exception as e:
             print("The error is: ",e)
+    
+    def save_info_delete(df , n , dom):
+        try:
+            article_csv = pd.read_csv(r'D:\data_instruction_backup\Master table.csv')
+            print("original : " ,len(df))
+            merge_table = pd.merge(df, article_csv,  left_on=['keys'], right_on=['keys'] , how="left" ,  indicator = True) 
+            print("merge_table : " ,len(merge_table))
+            print(merge_table.columns)
+            print(len(merge_table[merge_table['_merge'] == 'both']) , len(df))
+            print(merge_table['keys'].tolist())
+            ids_keys = merge_table['keys'].tolist()
+
+            #cursor.execute('DELETE FROM [dbo].[TD_info] WHERE article_id in {}'.format(ids_keys))
+
+        except Exception as e:
+            print("The error is: ",e)  
+
     def save_info(df , n , dom):
         try:
             article_csv = pd.read_csv(r'D:\data_instruction_backup\Master table.csv')
@@ -236,17 +253,24 @@ def app():
             print("merge_table : " ,len(merge_table))
             print(merge_table.columns)
             print(len(merge_table[merge_table['_merge'] == 'both']) , len(df))
+            print(merge_table)
+
             for index, row in merge_table.iterrows():
+                # j = cursor.execute("SELECT article_id  from TD_info  where  article_id  = {} ".format(("'"+row["keys"]+"'")))
+                # df_new = j.fetchall()
+                # if len(df_new) != 0:
+                #     continue
+
                 task_type_id = 0
-                if row["Instruction task type"] == "Closed QA":
+                if row["type_new_x"] == "Closed QA":
                     task_type_id = 2
-                elif row["Instruction task type"] == "Open QA":
+                elif row["type_new_x"] == "Open QA":
                     task_type_id = 1
-                elif row["Instruction task type"] == "Summarization":
+                elif row["type_new_x"] == "Summarization":
                     task_type_id = 4
-                elif row["Instruction task type"] == "Classification":
+                elif row["type_new_x"] == "Classification":
                     task_type_id = 6
-                elif row["Instruction task type"] == "Multiple choice":
+                elif row["type_new_x"] == "Multiple choice":
                     task_type_id = 3
 
                 actor = 'no'
@@ -279,17 +303,51 @@ def app():
                 q= ""
                 #q = "_fix1"
 
-                row1 = (row["keys"] + q,row["type"],row["title"],row["texts"],row["url"],row["type_new"])
+                row1 = (row["keys"] + q,row["type"],row["title"],row["texts"],row["url"],row["type_new_y"])
                 cursor.execute('INSERT INTO TM_articles(article_id ,type_domain,  title_name, contents, url , task_type) VALUES (?,?,?,?,?,?)', row1)
 
-                row1 = (row["type"],row["keys"] + q,0,row["Instruction task type"], task_type_id  ,row["Instruction"].strip(),row["Input"].strip(),row["Output"].strip() , actor)
+                row1 = (row["type"],row["keys"] + q,0,row["type_new_x"], task_type_id  ,row["Instruction"].strip(),row["Input"].strip(),row["Output"].strip() , actor)
                 cursor.execute('INSERT INTO TD_info(type_domain, article_id, rev, task_type,  task_type_id, Instruction, Input, Output, Actor) VALUES (?,?,?,?,?,?,?,?,?)', row1)
-            
             if len(merge_table[merge_table['_merge'] == 'both']) == len(df):
                 cnxn.commit()
                 print("finish ==> " + dom )
         except Exception as e:
             print("The error is: ",e)
+    def hhhh():
+        import pandas as pd
+        from urllib.parse import urlsplit
+        article_csv = pd.read_csv(r'D:\data_instruction_backup\Master table.csv')
+
+       
+
+        list_url_fi = []
+        list_url_re = []
+        list_url_le = []
+        list_url_me = []
+        for index, row in article_csv.iterrows():
+            if row["Topic"] == "Finance":
+                list_url_fi.append(urlsplit(row["url"]).netloc)
+            elif row["Topic"] == "Retail":
+                list_url_re.append(urlsplit(row["url"]).netloc)
+            elif row["Topic"] == "Legal":
+                list_url_le.append(urlsplit(row["url"]).netloc)
+            elif row["Topic"] == "Medical":
+                list_url_me.append(urlsplit(row["url"]).netloc)
+        dictionary = {}
+        for item in list_url_fi:
+            dictionary[item] = dictionary.get(item, 0) + 1
+            for item in list_url_re:
+                dictionary[item] = dictionary.get(item, 0) + 1
+            for item in list_url_le:
+                dictionary[item] = dictionary.get(item, 0) + 1
+            for item in list_url_me:
+                dictionary[item] = dictionary.get(item, 0) + 1
+        print(pd.DataFrame(dictionary.items(), columns=['web', 'count']))
+
+        
+        
+        all_web = pd.DataFrame(dictionary.items(), columns=['web', 'count'])
+        all_web.to_csv(f"D:\expertise_web\data_original\web_count_new1.csv" , encoding="utf-8")
 
     with headerSection:
             st.title("Login")
@@ -304,55 +362,111 @@ def app():
                     show_logout_page() 
 
 
-                    # df_new1 = cursor.execute("SELECT  a.article_id,a.instruction_wang ,a.input_wang ,a.output_wang ,b.task_type ,b.Instruction ,b.Input ,b.Output ,c.domain_tags ,c.thai_specific FROM TD_vistec_chk as a LEFT OUTER JOIN View_vistec_check as b on a.article_id = b.article_id LEFT OUTER JOIN TD_insert as c on a.article_id = c.article_id where a.review_wang = 'แก้ไขแล้ว'  or a.review_final_vistec = 'แก้ไขแล้ว' or a.comment = ''")
-                    # df_new1 = df_new1.fetchall()
+#                     df_new1 = cursor.execute("SELECT  a.article_id,a.instruction_wang ,a.input_wang ,a.output_wang ,b.task_type ,b.Instruction ,b.Input ,b.Output ,c.domain_tags ,c.thai_specific FROM TD_vistec_chk as a LEFT OUTER JOIN View_vistec_check as b on a.article_id = b.article_id LEFT OUTER JOIN TD_insert as c on a.article_id = c.article_id where a.review_wang = 'แก้ไขแล้ว'  or a.review_final_vistec = 'แก้ไขแล้ว' or a.comment = ''")
+#                     df_new1 = df_new1.fetchall()
+#                     print(len(df_new1))
 
-                    # article_id1 = []
-                    # inst1 = []
-                    # inpu1 = []
-                    # outpu1 = []
-                    # task_type1 = []
-                    # licen1 = []
-                    # domain1 = []
-                    # tags1 = []
-                    # thai1 = []
+#                     article_id1 = []
+#                     inst1 = []
+#                     inpu1 = []
+#                     outpu1 = []
+#                     task_type1 = []
+#                     licen1 = []
+#                     domain1 = []
+#                     tags1 = []
+#                     thai1 = []
 
-                    # for jj in df_new1:
-                    #     article_id = jj[0].replace("_fix1" , "")
-                    #     dom = jj[0].replace("_fix1" , "").split("_")[0]
+#                     for jj in df_new1:
+#                         article_id = jj[0].replace("_fix1" , "")
+#                         dom = jj[0].replace("_fix1" , "").split("_")[0]
 
-                    #     if jj[1] is not None:
-                    #         instruction = jj[1]
-                    #         inpu = '' if jj[2] is None else jj[2]
-                    #         outpu = jj[3]
-                    #     else:
-                    #         instruction = jj[5]
-                    #         inpu = '' if jj[6] is None else jj[6]
-                    #         outpu = jj[7]
+#                         if jj[1] is not None:
+#                             instruction = jj[1]
+#                             inpu = '' if jj[2] is None else jj[2]
+#                             outpu = jj[3]
+#                         else:
+#                             instruction = jj[5]
+#                             inpu = '' if jj[6] is None else jj[6]
+#                             outpu = jj[7]
 
-                    #     task_type = jj[4]
-                    #     all_tag = []
-                    #     for h in jj[8].split(","):
-                    #         all_tag.append(h.split(".")[1])
+#                         task_type = jj[4]
+#                         all_tag = []
+#                         for h in jj[8].split(","):
+#                             all_tag.append(h.split(".")[1])
 
-                    #     tag = ','.join(all_tag)
-                    #     is_thai = jj[9]
-                    #     licen = 'cc-by-sa-4.0'
+#                         tag = ','.join(all_tag)
+#                         is_thai = jj[9]
+#                         licen = 'cc-by-nc-4.0'
 
-                    #     article_id1.append(article_id)
-                    #     domain1.append(dom)
-                    #     inst1.append(instruction)
-                    #     inpu1.append(inpu)
-                    #     outpu1.append(outpu)
-                    #     task_type1.append(task_type)
-                    #     licen1.append(licen)
-                    #     tags1.append(tag)
-                    #     thai1.append(is_thai)
-                    # df_all_insert_v1 = pd.DataFrame(list(zip(article_id1 ,domain1, inst1 , inpu1, outpu1,thai1 ,tags1, task_type1 , licen1 )) ,columns=['ID','Domain' ,'Instruction', 'Input', 'Output' ,'Thai_Specfic','Tags', 'Task_type' , 'License'])
-                    # df_all_insert_v1.to_csv(f"D:\expertise_web\instru_batch1.csv" , encoding="utf-8")
+#                         article_id1.append(article_id)
+#                         domain1.append(dom)
+#                         inst1.append(instruction)
+#                         inpu1.append(inpu)
+#                         outpu1.append(outpu)
+#                         task_type1.append(task_type)
+#                         licen1.append(licen)
+#                         tags1.append(tag)
+#                         thai1.append(is_thai)
+#                     df_all_insert_v1 = pd.DataFrame(list(zip(article_id1 ,domain1, inst1 , inpu1, outpu1,thai1 ,tags1, task_type1 , licen1 )) ,columns=['ID','Domain' ,'Instruction', 'Input', 'Output' ,'Thai_Specfic','Tags', 'Task_type' , 'License'])
+#                     print(df_all_insert_v1)
+#                     print("==========")
+#                     df_all_insert_v1 = df_all_insert_v1.drop_duplicates(subset=['ID'])
+#                     df = pd.read_csv(r'D:\expertise_web\instru_batch1.csv')
+#                     df = df[["ID"]]
 
+#                     s = pd.merge(df_all_insert_v1, df,  left_on=['ID'], right_on=['ID'] , how="left" ,  indicator = True) 
+#                     s = s[s['_merge'] != 'both' ].sample(5000)
+#                     print(s)
+#                     article_csv = pd.read_csv(r'D:\data_instruction_backup\Master table.csv')
+#                     article_csv = article_csv[["keys", "url"]]
+#                     merge_table = pd.merge(s, article_csv,  left_on=['ID'], right_on=['keys'] , how="left" ) 
+#                     merge_table["domain_url"] = merge_table["url"].apply(lambda x: urlsplit(x).netloc)
+#                     print("merge_table : " ,len(merge_table))
+#                     print(merge_table)
 
+#                     def add_values(row):
+#                         #print(row)
+#                         if row['Domain'] == "Finance" and row["domain_url"]  in ["www.brandbuffet.in.th" , "brandinside.asia", "www.ceochannels.com", "www.marketingoops.com" ]: 
+#                             return "test"
+#                         elif row['Domain'] == "Legal" and row["domain_url"]  in ["www.mkclegal.com" , "www.promsaklawyer.com", "www.saranlaw.com", "www.slawconsult.com", "www.spylawyers.com" , "www.the101.world"]: 
+#                             return "test"
+#                         elif row['Domain'] == "Medical" and row["domain_url"]  in ["www.paolohospital.com",
+# "www.patrangsit.com",
+# "www.pidst.or.th",
+# "www.phyathai.com",
+# "phyathai3hospital.com",
+# "www.pitsanuvejphichit.com",
+# "www.pitsanuvejuttaradit.com",
+# "www.praram9.com",
+# "pribta-tangerine.com",
+# "www.princhealth.com",
+# "princpaknampo.com",
+# "www.princsuvarnabhumi.com",
+# "www.ttmed.psu.ac.th",
+# "www.sikarin.com",
+# "somdej.or.th",
+# "www.synphaet.co.th",
+# "vetfocus.royalcanin.com",
+# "www.apimonclinic.com"]: 
+#                             return "test"
+#                         elif row['Domain'] == "Retail" and row["domain_url"]  in ["www.ceochannels.com", "www.brandage.com", "readthecloud.co"]: 
+#                             return "test"
+#                         else:
+#                             return "train"
+#                     merge_table['set']= merge_table.apply(add_values, axis=1)
+#                     print(merge_table)
 
+#                     print(merge_table[merge_table["set"] == 'train'])
+#                     print(merge_table[merge_table["set"] == 'test'])
+
+#                     train_d = merge_table[merge_table["set"] == 'train']
+#                     test_d = merge_table[merge_table["set"] == 'test']
+#                     train_d.to_csv(f"D:\expertise_web\instru_batch2.csv" , encoding="utf-8")
+#                     test_d.to_csv(f"D:\expertise_web\instru_batch2_test.csv" , encoding="utf-8")
+
+                    
+                    #merge_table.to_csv(f"D:\expertise_web\yyyyu.csv" , encoding="utf-8")
+                    #df_all_insert_v1.to_csv(f"D:\expertise_web\iest_b2.csv" , encoding="utf-8")
 
 
                     # import pandas as pd
@@ -390,21 +504,33 @@ def app():
 
                     #article_csv = pd.read_csv(r'D:\data_instruction_backup\Master table.csv')
 
+                    # print("===================")
                     # import pandas as pd
                     # from urllib.parse import urlsplit
                     # article_csv = pd.read_csv(r'D:\data_instruction_backup\Master table.csv')
+                    # #article_csv = pd.read_csv(r'D:\expertise_web\total_re.csv')
+                    
+
+                    
+                    # df = pd.read_csv(r'D:\expertise_web\instru_batch1.csv')
+                    # article_csv = pd.merge(df, article_csv,  left_on=['ID'], right_on=['keys'] , how="left" ,  indicator = True) 
+                    # print("merge_table : " ,len(article_csv))
+                    # print(article_csv)
+                    # article_csv = article_csv[article_csv['_merge'] == 'both' ]
+                    # article_csv = article_csv[article_csv['Domain'] == 'Legal' ]
+
                     # list_url_fi = []
                     # list_url_re = []
                     # list_url_le = []
                     # list_url_me = []
                     # for index, row in article_csv.iterrows():
-                    #     if row["Topic"] == "Finance":
+                    #     if row["Domain"] == "Finance":
                     #         list_url_fi.append(urlsplit(row["url"]).netloc)
-                    #     elif row["Topic"] == "Retail":
+                    #     elif row["Domain"] == "Retail":
                     #         list_url_re.append(urlsplit(row["url"]).netloc)
-                    #     elif row["Topic"] == "Legal":
+                    #     elif row["Domain"] == "Legal":
                     #         list_url_le.append(urlsplit(row["url"]).netloc)
-                    #     elif row["Topic"] == "Medical":
+                    #     elif row["Domain"] == "Medical":
                     #         list_url_me.append(urlsplit(row["url"]).netloc)
 
                     # dictionary = {}
@@ -417,8 +543,8 @@ def app():
                     # for item in list_url_me:
                     #     dictionary[item] = dictionary.get(item, 0) + 1
                     # print(pd.DataFrame(dictionary.items(), columns=['web', 'count']))
-                    # all_web = pd.DataFrame(dictionary.items(), columns=['web', 'count'])
-                    # all_web.to_csv(f"D:\expertise_web\data_original\web_count.csv" , encoding="utf-8")
+                    #all_web = pd.DataFrame(dictionary.items(), columns=['web', 'count'])
+                    #all_web.to_csv(f"D:\expertise_web\data_original\web_count_domain.csv" , encoding="utf-8")
 
 
                     # df1 = pd.read_csv(r'C:\Users\BeEr\Downloads\iapp_tydi_4000.csv')
@@ -447,20 +573,30 @@ def app():
                     # print(df1.head(3))
                     # save_info(df1, 5, 'Retail')
 
-                    #df2 = pd.read_csv(r'D:\expertise_web\data_original\Medical10.csv')
-                    #df2 = df2.fillna('')
-                    #print(df2.head(3))
-                    #save_info(df2, 6, 'Medical')
+                    # df2 = pd.read_csv(r'D:\expertise_web\data_original\Medical11.csv')
+                    # df2 = df2.fillna('')
+                    # print(df2.head(3))
+                    # save_info_delete(df2, 6, 'Medical')
 
-                    #df3 = pd.read_csv(r'D:\expertise_web\data_original\Legal10.csv')
-                    #df3 = df3.fillna('')
-                    #print(df3.head(2))
-                    #save_info(df3, 5, 'Legal')
+                    # df3 = pd.read_csv(r'D:\expertise_web\data_original\Legal11.csv')
+                    # df3 = df3.fillna('')
+                    # print(df3.head(2))
+                    # save_info_delete(df3, 5, 'Legal')
 
-                    #df4 = pd.read_csv(r'D:\expertise_web\data_original\Finance10.csv') #read_excel
-                    #df4 = df4.fillna('')
-                    #print(df4.head(2))
-                    #save_info(df4, 5, 'Finance')
+                    # df4 = pd.read_csv(r'D:\expertise_web\data_original\Finance11.csv') 
+                    # df4 = df4.fillna('')
+                    # print(df4.head(2))
+                    # save_info_delete(df4, 5, 'Finance')
+
+
+                    # j = cursor.execute("SELECT article_id  from TD_info  where  article_id not like '%fix%'")
+                    # df_new = j.fetchall()
+                    # print(len(df_new))
+                    # fff3 = [d[0] for d in df_new]
+                    # df_all_insert_v1 = pd.DataFrame(list(fff3) ,columns=['article_id' ])
+                    # df_all_insert_v1.to_csv(r"D:\expertise_web\TD_info.csv" , encoding="utf-8")
+
+                    
 
                     # try:
                     #     for index, row in df1.iterrows():
@@ -503,7 +639,7 @@ def app():
 
                     # df2 = pd.DataFrame({'keys': ['test'],
                     #                    'batch': ['0']})
-                    # for i in range(1,10):
+                    # for i in range(2,12):
                     #     f = f'D:\expertise_web\data_original\Finance{i}.csv'
                     #     df = pd.read_csv(f)
                     #     df = df[['keys']]
@@ -511,7 +647,7 @@ def app():
                     #     df['batch'] = str(i)
                     #     df2 = pd.concat([df2, df])
 
-                    # for i in range(1,10):
+                    # for i in range(2,12):
                     #     f = f'D:\expertise_web\data_original\Legal{i}.csv'
                     #     df = pd.read_csv(f)
                     #     df = df[['keys']]
@@ -519,7 +655,7 @@ def app():
                     #     df['batch'] = str(i)
                     #     df2 = pd.concat([df2, df])
 
-                    # for i in range(1,10):
+                    # for i in range(2,12):
                     #     f = f'D:\expertise_web\data_original\Medical{i}.csv'
                     #     df = pd.read_csv(f)
                     #     df = df[['keys']]
@@ -527,18 +663,27 @@ def app():
                     #     df['batch'] = str(i)
                     #     df2 = pd.concat([df2, df])
                         
-                    # for i in range(1,10):
+                    # for i in range(2,12):
                     #     f = f'D:\expertise_web\data_original\Retail{i}.csv'
                     #     df = pd.read_csv(f)
                     #     df = df[['keys']]
                     #     df['type_domain'] = "Retail"
                     #     df['batch'] = str(i)
                     #     df2 = pd.concat([df2, df])
-                        
+
+                    # from urllib.parse import urlsplit
+                    # article_csv = pd.read_csv(r'D:\data_instruction_backup\Master table.csv')
+                    # merge_table1 = pd.merge( article_csv, df2,  left_on=['keys'], right_on=['keys'] , how="left" ,  indicator = True)
+                    # merge_table1["domain_url"] = merge_table1["url"].apply(lambda x: urlsplit(x).netloc)
+                    # print(merge_table1)
+                    # merge_table1.to_csv(r"D:\expertise_web\total_re.csv" , encoding="utf-8")
+
 
                     # print("TD_insert : " ,len(df_all_insert_v1))
                     # print("TD_info : " ,len(df_all_info_v1))
-                    # print("All : " ,len(df2))
+                    #print("All : " ,len(df2))
+                    # print(str(len(df2) + len(df_new)))
+                    #df2.to_csv(r"D:\expertise_web\total_re.csv" , encoding="utf-8")
                     # merge_table1 = pd.merge(df2, df_all_insert_v1,  left_on=['keys'], right_on=['article_id_insert'] , how="left" ,  indicator = True)
                     # print(merge_table1.head())
                     # merge_table = pd.merge(merge_table1, df_all_info_v1,  left_on=['keys'], right_on=['article_id_info'] , how="left" )

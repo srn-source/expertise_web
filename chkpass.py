@@ -267,7 +267,7 @@ def app():
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%0' or article_id like '%8' )")
         df_new = df_new.fetchall()
     elif "ADMIN1" in st.session_state['userName'].upper(): 
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE   review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%9' or article_id like '%1')")
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE   review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%9' or article_id like '%1') ")
         df_new = df_new.fetchall()
     elif "ADMIN5" in st.session_state['userName'].upper(): 
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE   review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%2' )")
@@ -280,7 +280,7 @@ def app():
 
     REVIEWSTATUS =[
         "",
-     "PASS",
+     "PASS", 
      "NOT PASS"
     ]
     # df_count = cursor.execute("SELECT COUNT(*) from View_vistec_check WHERE Actor_vistec = {}  and vistec_chk IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
