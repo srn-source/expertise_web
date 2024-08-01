@@ -472,7 +472,6 @@ def app():
                                 st.stop()
                             
                         if can_save == 1:
-                            try:
                                 # row2 = (df_new[0][1],review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
                                 # print("row2 ==>", row2)
 
@@ -496,8 +495,6 @@ def app():
                                 st.success("Details successfully submitted!")
                                 st.rerun()
 
-                            except Exception as e:
-                                st.error(e)
 
 
     
@@ -548,7 +545,7 @@ def app():
                             new_ment = ""
 
                         row2 = (df_new[0][1],review_status,new_ment,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
-                        print("row2 ==>", row2)
+                        #print("row2 ==>", row2)
 
                         cursor.execute("INSERT INTO TD_vistec_chk(article_id, review_status, comment, Actor, Date_actor ) VALUES (?,?,?,?,?)", row2)
                         cnxn.commit()
