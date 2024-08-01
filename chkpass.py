@@ -356,7 +356,6 @@ def app():
                                 st.stop()
                             
                         if can_save == 1:
-                            try:
                                 # row2 = (df_new[0][1],review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
                                 # print("row2 ==>", row2)
 
@@ -379,9 +378,6 @@ def app():
                                 cnxn.commit()
                                 st.success("Details successfully submitted!")
                                 st.rerun()
-
-                            except Exception as e:
-                                st.error(e)
     #    comment_name1 = st.text_area(label="Instruction:", height= 50, value=df_new1[0][5])
     #    comment_name2 = st.text_area(label="Input:", height= 200, value=df_new1[0][6])
     #    comment_name3 = st.text_area(label="Output:", height= 400, value=df_new1[0][7])
@@ -538,7 +534,6 @@ def app():
                         st.stop()
                     
                 if can_save == 1:
-                    try:
                         comment_tag = ", ".join(comment_tag)
                         new_ment = comment_tag +  ", " +comment_name
                         if new_ment == ", ":
@@ -551,8 +546,6 @@ def app():
                         cnxn.commit()
                         st.success("Details successfully submitted!")
                         st.rerun()
-                    except Exception as e:
-                        st.error(e)
                
            
                       
