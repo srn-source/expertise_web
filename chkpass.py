@@ -258,7 +258,7 @@ def app():
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%0' or article_id like '%4') ")
         df_new = df_new.fetchall()
     elif "ADMIN4" in st.session_state['userName'].upper(): 
-        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%3' or article_id like '%6' )")
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%3' )")
         df_new = df_new.fetchall()
     elif "ADMIN9" in st.session_state['userName'].upper(): 
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE   review_status = 'PASS' and vistec_chk IS NULL and  ( article_id like '%5') ")
@@ -272,11 +272,10 @@ def app():
     elif "ADMIN5" in st.session_state['userName'].upper(): 
         df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE   review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%2' )")
         df_new = df_new.fetchall()
-    # elif "ADMIN" == st.session_state['userName'].upper(): 
-    #     df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE   review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%9' )")
-    #     df_new = df_new.fetchall()
+    elif "ADMIN2" == st.session_state['userName'].upper(): 
+        df_new = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE   review_status = 'PASS' and vistec_chk IS NULL and (article_id like '%6' )")
+        df_new = df_new.fetchall()
     
-
 
     REVIEWSTATUS =[
         "",
@@ -400,33 +399,6 @@ def app():
                 #print(y1)
                 df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and {} ".format(y1))
                 df_new1 = df_new1.fetchall() 
-    #    if "ADMIN11" in st.session_state['userName'].upper():
-    #         df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%3') ")
-    #         df_new1 = df_new1.fetchall()
-    #    elif "ADMIN12" in st.session_state['userName'].upper():
-    #         df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%5' or article_id like '%70' or article_id like '%80' or article_id like '%90') ")
-    #         df_new1 = df_new1.fetchall()
-    #    elif "ADMIN13" in st.session_state['userName'].upper():
-    #         df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%00' or article_id like '%10' or article_id like '%20'  ) ")
-    #         df_new1 = df_new1.fetchall()
-    #    elif "ADMIN14" in st.session_state['userName'].upper():
-    #         df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%9') ")
-    #         df_new1 = df_new1.fetchall()
-    #    elif "ADMIN15" in st.session_state['userName'].upper():
-    #         df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%01' or article_id like '%11' or article_id like '%21' or article_id like '%31' or article_id like '%41') ")
-    #         df_new1 = df_new1.fetchall()
-    #    elif "ADMIN16" in st.session_state['userName'].upper():
-    #         df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%51' or article_id like '%61' ) ")
-    #         df_new1 = df_new1.fetchall()
-    #    elif "ADMIN17" in st.session_state['userName'].upper():
-    #         df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%2') ")
-    #         df_new1 = df_new1.fetchall()
-    #    elif "ADMIN18" in st.session_state['userName'].upper():
-    #         df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE  comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%8' or article_id like '%54' or article_id like '%64' or article_id like '%74' or article_id like '%84' or article_id like '%94' or article_id like '%71' or article_id like '%81' or article_id like '%91' or article_id like '%30' or article_id like '%40')  ")
-    #         df_new1 = df_new1.fetchall()
-    #    else:
-    #        df_new1 = cursor.execute("SELECT TOP 1 * from View_vistec_check WHERE   comment_vistec != '' and Date_actor_wang IS NULL and (article_id like '%50' or article_id like '%60' or article_id like '%04' or article_id like '%14' or article_id like '%24' or article_id like '%34' or article_id like '%44' or article_id like '%6' or article_id like '%7') ")
-    #        df_new1 = df_new1.fetchall()
 
         df_count = cursor.execute("SELECT COUNT(*) from View_vistec_check WHERE Actor_wang = {} and Date_actor_wang IS NOT NULL;".format("'"+st.session_state['userName']+ "'"))
         df_count = df_count.fetchall() 
