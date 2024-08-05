@@ -238,7 +238,9 @@ def reconnect():
 
 def app():
     #print("====> ",st.session_state)
-    if st.session_state['loggedIn'] == False or "ADMIN" not in st.session_state['userName'].upper() :
+    if st.session_state['loggedIn'] == False \
+        and ("ADMIN" not in st.session_state['userName'].upper() \
+        or "data_validator" not in st.session_state['userName'].lower()):
         st.error("Please login")
         st.stop()
     st.session_state['ids'] = []
