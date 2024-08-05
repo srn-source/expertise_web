@@ -315,26 +315,23 @@ def app():
                     if not Instruction_name  or not Answer or not comment_name or not review_status or not domain_tag or not thai_spec:
                         st.warning("Ensure all mandatory fields are filled.")
                         st.stop()
-                    # elif existing_data["CompanyName"].str.contains(company_name).any():
-                    #     st.warning("A vendor with this company name already exists.")
-                    #     st.stop()
                     else:
-                        # Create a new row of vendor data
-                        try:
-                            domain_tag = ",".join(domain_tag)
-                            #cursor.execute('INSERT INTO TD_insert(type_domain, article_id, task_type, Instruction, Input, Output) VALUES (?,?,?,?,?,?)', tuple(row))
-                            row = (df_new[0][0],df_new[0][1],df_new[0][2],df_new[0][3],df_new[0][13],Instruction_name,input_name,Answer,domain_tag,thai_spec,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
-                            cursor.execute("INSERT INTO TD_insert(type_domain, article_id, rev, task_type, task_type_id, Instruction, Input, Output, domain_tags, thai_specific, review_status, comment, Actor, Date_actor ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row)
-                            cnxn.commit()
-                            st.success("Details successfully submitted!")
-                            st.rerun()
-                            # from streamlit_js_eval import streamlit_js_eval
-                            # streamlit_js_eval(js_expressions="parent.window.location.reload()")
-                            #anno.app()
-                            #row = (df_new[0][0],df_new[0][1],df_new[0][2],df_new[0][3],Instruction_name,input_name,Answer,domain_tag,thai_spec,review_status,comment_name,st.session_state['userName'],datetime.now())
-                        except Exception as e:
-                            #print("The error is: ",e)
-                            st.error(e)
+                        domain_tag = ",".join(domain_tag)
+                        row = (df_new[0][0],df_new[0][1],df_new[0][2],df_new[0][3],df_new[0][13],Instruction_name,input_name,Answer,domain_tag,thai_spec,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                        cursor.execute("INSERT INTO TD_insert(type_domain, article_id, rev, task_type, task_type_id, Instruction, Input, Output, domain_tags, thai_specific, review_status, comment, Actor, Date_actor ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row)
+                        cnxn.commit()
+                        st.success("Details successfully submitted!")
+                        st.rerun()
+                        # try:
+                        #     domain_tag = ",".join(domain_tag)
+                        #     #cursor.execute('INSERT INTO TD_insert(type_domain, article_id, task_type, Instruction, Input, Output) VALUES (?,?,?,?,?,?)', tuple(row))
+                        #     row = (df_new[0][0],df_new[0][1],df_new[0][2],df_new[0][3],df_new[0][13],Instruction_name,input_name,Answer,domain_tag,thai_spec,review_status,comment_name,st.session_state['userName'],datetime.now(pytz.timezone('Asia/Bangkok')))
+                        #     cursor.execute("INSERT INTO TD_insert(type_domain, article_id, rev, task_type, task_type_id, Instruction, Input, Output, domain_tags, thai_specific, review_status, comment, Actor, Date_actor ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", row)
+                        #     cnxn.commit()
+                        #     st.success("Details successfully submitted!")
+                        #     st.rerun()
+                        # except Exception as e:
+                        #     st.error(e)
 
             else:
                  if st.session_state['loggedIn'] == False or "USER" in st.session_state['userName'] :
